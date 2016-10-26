@@ -78,5 +78,5 @@ func (d *Data) missing(A, B string) (*Data, error) {
 	if (len(d.missingFolder) > 0) || (len(d.missingFiles) > 0) {
 		return d, nil
 	}
-	return nil, fmt.Errorf("No folders missing!")
+	return nil, fmt.Errorf("No folders or files missing in PathB!")
 }
