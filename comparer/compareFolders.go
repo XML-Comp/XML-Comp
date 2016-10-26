@@ -12,7 +12,7 @@ func (d *Data) CompareContainingFoldersAndFiles() error {
 	if (d.PathA == "") || (d.PathB == "") {
 		return fmt.Errorf("Empty path")
 	}
-	missing, err := missingFolders(d.PathA, d.PathB)
+	missing, err := d.missingFolders(d.PathA, d.PathB)
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func (d *Data) CompareContainingFoldersAndFiles() error {
 		d := []byte(fmt.Sprintf("- %s\n", v))
 		file.Write(d)
 	}
-	file, err := os.Create(fmt.Sprintf("%s/missingFiles.txt", d.PathB))
+	file, err = os.Create(fmt.Sprintf("%s/missingFiles.txt", d.PathB))
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (d *Data) CompareContainingFoldersAndFiles() error {
 	return nil
 }
 
-func (d *Data) missing(A, B string) (*Data, error) {
+func (d *Data) missingFolders(A, B string) (*Data, error) {
 	files, err := ioutil.ReadDir(A)
 	if err != nil {
 		return nil, err
