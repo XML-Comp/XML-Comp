@@ -6,59 +6,77 @@ import (
 	"os"
 )
 
-// CompareContainingFolders looks to two different directories given called pathA & pathB, and creates a file named
+// CompareContainingFoldersAndFiles looks to two different directories given called d.PathA & d.PathB, and creates a file named
 // "missingFolders.txt"
-func CompareContainingFolders(pathA, pathB string) error {
-	if (pathA == "") || (pathB == "") {
+func (d *Data) CompareContainingFoldersAndFiles() error {
+	if (d.PathA == "") || (d.PathB == "") {
 		return fmt.Errorf("Empty path")
 	}
-	missing, err := missingFolders(pathA, pathB)
+	missing, err := missingFolders(d.PathA, d.PathB)
 	if err != nil {
 		return err
 	}
-	file, err := os.Create(fmt.Sprintf("%s/missingFolders.txt", pathB))
+	file, err := os.Create(fmt.Sprintf("%s/missingFolders.txt", d.PathB))
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 	mfldr := []byte("<--Missing Folders-->\n")
 	file.Write(mfldr)
-	for _, v := range missing {
+	for _, v := range missing.missingFolder {
+		d := []byte(fmt.Sprintf("- %s\n", v))
+		file.Write(d)
+	}
+	file, err := os.Create(fmt.Sprintf("%s/missingFiles.txt", d.PathB))
+	if err != nil {
+		return err
+	}
+	mfls := []byte("<--Missing Files-->\n")
+	file.Write(mfls)
+	for _, v := range missing.missingFiles {
 		d := []byte(fmt.Sprintf("- %s\n", v))
 		file.Write(d)
 	}
 	return nil
 }
 
-func missingFolders(A, B string) ([]string, error) {
-	var DirA []string
-	var DirB []string
-	var missing []string
-
+func (d *Data) missing(A, B string) (*Data, error) {
 	files, err := ioutil.ReadDir(A)
 	if err != nil {
 		return nil, err
 	}
 	for _, v := range files {
-		DirA = append(DirA, v.Name())
+		if v.IsDir() {
+			d.dirA = append(d.dirA, v.Name())
+		}
+		d.fileA = append(d.fileA, v.Name())
 	}
 	files, err = ioutil.ReadDir(B)
 	if err != nil {
 		return nil, err
 	}
 	for _, v := range files {
-		DirB = append(DirB, v.Name())
+		if v.IsDir() {
+			d.dirB = append(d.dirB, v.Name())
+		}
+		d.fileB = append(d.fileB, v.Name())
 	}
-	for _, vA := range DirA {
-		for iB, vB := range DirB {
-			if (vA != vB) && (iB == len(DirB)-1) {
-				missing = append(missing, vA)
+	for _, vA := range d.dirA {
+		for iB, vB := range d.dirB {
+			if (vA != vB) && (iB == len(d.dirB)-1) {
+				d.missingFolder = append(d.missingFolder, vA)
 			}
-			continue
 		}
 	}
-	if len(missing) > 0 {
-		return missing, nil
+	for _, vA := range d.dirA {
+		for iB, vB := range d.dirB {
+			if (vA != vB) && (iB == len(d.fileB)-1) {
+				d.missingFolder = append(d.missingFiles, vA)
+			}
+		}
+	}
+	if (len(d.missingFolder) > 0) || (len(d.missingFiles) > 0) {
+		return d, nil
 	}
 	return nil, fmt.Errorf("No folders missing!")
 }
