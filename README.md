@@ -17,6 +17,19 @@ With these paths in hand you run our program and It will let you know in a `miss
 #### Dev Status
 Now It only compares containing folders in given pathA to pathB and creates a "missingFolder.txt" file into the pathB directory.
 
+#### XML-Comp CLI
+- Creating an independent binary:
+```shell
+$ go build -o $GOPATH/bin/xml-comp
+$ xml-comp help
+```
+
+- With executable binary:
+```shell
+$ go build -o xml-comp
+$ ./xml-comp help
+```
+
 #### To Do
 - Enter folders on pathA & pathB
 - Store files each path on separated variables
