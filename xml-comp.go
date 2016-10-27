@@ -54,8 +54,8 @@ To get current version, usage: xml-comp -v`,
 	} else {
 		if os.Args[1] == "-fd" {
 			//proceeding with action for folder comparer
-			pathA := os.Args[1]
-			pathB := os.Args[2]
+			pathA := os.Args[2]
+			pathB := os.Args[3]
 			fmt.Println("Creating instance ...")
 			instance := comparer.Data{PathA: pathA, PathB: pathB}
 			fmt.Println("Output:-")
