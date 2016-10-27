@@ -10,7 +10,7 @@ func TestCompareFolder(t *testing.T) {
 	instance := Data{PathA: "fakeDir1", PathB: "fakeDir2"}
 	if instance.CompareContainingFoldersAndFiles() == nil {
 		//If error = nil, then the function failed to notice fakeDirectories
-		t.Error("Oops! looks like error in existance of folders")
+		t.Error("Oops! looks like error in existence of folders")
 	}
 	//Testing for blank values
 	instance = Data{}
