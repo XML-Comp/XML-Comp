@@ -1,9 +1,10 @@
 package main
 
 import (
-	"XML-Comp/comparer"
 	"fmt"
 	"os"
+
+	"github.com/ArxdSilva/XML-Comp/comparer"
 )
 
 func main() {
