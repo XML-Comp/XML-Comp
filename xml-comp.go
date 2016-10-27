@@ -7,12 +7,17 @@ import (
 	"github.com/ArxdSilva/XML-Comp/comparer"
 )
 
+const (
+	Version = "0.0.2"
+)
+
 func main() {
 	//Help option
 	if len(os.Args) == 1 { // xml-comp
 		fmt.Println("Kindly mention options")
 		fmt.Println("Eg: xml-comp help")
-	} else if len(os.Args) == 2 {
+	}
+	if len(os.Args) == 2 {
 		//Help output
 		if os.Args[1] == "help" {
 			fmt.Println("You need two paths that we call pathA & pathB, which are described bellow:")
