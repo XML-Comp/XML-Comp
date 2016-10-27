@@ -3,22 +3,28 @@ Made this software to help [RimWorld](http://rimworldgame.com/) [community trans
 
 (1) and maybe other indie games that uses XML
 
+### Installing
+```go get github.com/ArxdSilva/XML-Comp```
+
+### Running
+```xml-comp -original /path/to/language/english -translation /path/to/language/translation```
+
 ### How this works? - RimWorld translator
-You need two paths that we call pathA & pathB, which are described bellow:
-- pathA: Full path directory of your RimWorld English folder
+You need two paths that we call "original" & "translation", which are described bellow:
+- "original": Full path directory of your RimWorld English folder
 
-My path - as an example: pathA = **/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English**
-- pathB: Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon)
+My path - as an example: "original" = **/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English**
+- "translation": Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon)
 
-Me again: pathB = **/Users/arthur/Github/RimWorld-PortugueseBrazilian**
+Me again: "translation" = **/Users/arthur/Github/RimWorld-PortugueseBrazilian**
 
 With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
 
 #### Dev Status
-Now It only compares containing folders in given pathA to pathB and creates a "missingFolder.txt" file into the pathB directory.
+Now It only compares containing folders in given "original" to "translation" and creates a "missingFolder.txt" file into the "translation" directory.
 
 #### To Do
-- Enter folders on pathA & pathB
+- Enter folders on "original" & "translation"
 - Store files each path on separated variables
 - Compare stored Files on 'same' folder
 - Create Same folder 'missingFiles.txt'
