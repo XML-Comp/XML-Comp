@@ -16,8 +16,7 @@ func main() {
 	if len(os.Args) == 1 { // xml-comp
 		fmt.Println("Kindly mention options")
 		fmt.Println("Eg: xml-comp help")
-	}
-	if len(os.Args) == 2 {
+	} else if len(os.Args) == 2 {
 		//Help output
 		if os.Args[1] == "help" {
 			fmt.Println("You need two paths that we call pathA & pathB, which are described bellow:")
