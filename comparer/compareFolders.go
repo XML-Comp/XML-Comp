@@ -48,6 +48,7 @@ func (d *Data) missingFolders(A, B string) (*Data, error) {
 	for _, v := range files {
 		if v.IsDir() {
 			d.dirA = append(d.dirA, v.Name())
+			continue
 		}
 		d.fileA = append(d.fileA, v.Name())
 	}
@@ -58,6 +59,7 @@ func (d *Data) missingFolders(A, B string) (*Data, error) {
 	for _, v := range files {
 		if v.IsDir() {
 			d.dirB = append(d.dirB, v.Name())
+			continue
 		}
 		d.fileB = append(d.fileB, v.Name())
 	}

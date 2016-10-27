@@ -20,10 +20,10 @@ With these paths in hand you run our program and It will let you know in a `miss
 #### Dev Status
 Now It only compares containing folders in given pathA to pathB and creates a "missingFolder.txt" file into the pathB directory.
 
-#### XML-Comp CLI
-- Creating an independent binary:
+#### XML-Comp CLI Usage
 ```shell
 $ git clone github.com/arxdsilva/xml-comp
+$ cd xml-comp
 $ go install
 $ xml-comp help
 ```
