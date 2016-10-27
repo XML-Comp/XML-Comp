@@ -23,14 +23,9 @@ Now It only compares containing folders in given pathA to pathB and creates a "m
 #### XML-Comp CLI
 - Creating an independent binary:
 ```shell
-$ go build -o $GOPATH/bin/xml-comp
+$ git clone github.com/arxdsilva/xml-comp
+$ go install
 $ xml-comp help
-```
-
-- With executable binary:
-```shell
-$ go build -o xml-comp
-$ ./xml-comp help
 ```
 
 #### To Do
