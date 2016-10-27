@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ArxdSilva/XML-Comp/comparer"
+	"XML-Comp/comparer"
 )
 
 const (
@@ -12,24 +12,56 @@ const (
 )
 
 func main() {
+	//map for options
+	options := map[string]string{
+		//help
+		"help": `
+To Use Folder Verification, usage: xml-comp -fd pathA pathB
+You need two paths that we call pathA & pathB, which are described bellow:
+	pathA: /home/user/folder1
+	pathB: /home/user/folder2
+
+To get current version, usage: xml-comp -v`,
+		"-h": `
+To Use Folder Verification, usage: xml-comp -fd pathA pathB
+u need two paths that we call pathA & pathB, which are described bellow:
+	pathA: /home/user/folder1
+	pathB: /home/user/folder2
+
+To get current version, usage: xml-comp -v`,
+		//version
+		"version": "Current version is " + Version,
+		"-v":      "Current version is " + Version,
+		//Folder and File function index
+		"-fd": "Mention paths for comparing, usage: xml-comp -fd pathA pathB",
+		"-fl": "Coming soon!",
+	}
 	//Help option
 	if len(os.Args) == 1 { // xml-comp
 		fmt.Println("Kindly mention options")
 		fmt.Println("Eg: xml-comp help")
 	} else if len(os.Args) == 2 {
-		//Help output
-		if os.Args[1] == "help" {
-			fmt.Println("You need two paths that we call pathA & pathB, which are described bellow:")
-			fmt.Println("	pathA: /home/user/folder1")
-			fmt.Println("	pathB: /home/user/folder2")
-			fmt.Println("Use: xml-comp pathA pathB")
+		//Flags
+		val := os.Args[1]
+		//Existence of flags
+		if len(options[val]) > 0 {
+			//Flag exists
+			fmt.Println(options[val])
+		} else {
+			//Doesn't exist
+			fmt.Println("Seems like you chose wrong option, see $ xml-comp help")
 		}
-	} else { //xml-comp pathA pathB
-		pathA := os.Args[1]
-		pathB := os.Args[2]
-		fmt.Println("Creating instance ...")
-		instance := comparer.Data{PathA: pathA, PathB: pathB}
-		fmt.Println("Output:-")
-		fmt.Println(instance.CompareContainingFoldersAndFiles())
+	} else {
+		if os.Args[1] == "-fd" {
+			//proceeding with action for folder comparer
+			pathA := os.Args[2]
+			pathB := os.Args[3]
+			fmt.Println("Creating instance ...")
+			instance := comparer.Data{PathA: pathA, PathB: pathB}
+			fmt.Println("Output:-")
+			fmt.Println(instance.CompareContainingFoldersAndFiles())
+		} else {
+			fmt.Println(options[os.Args[1]])
+		}
 	}
 }
