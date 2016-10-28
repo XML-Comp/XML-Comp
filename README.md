@@ -2,15 +2,19 @@
 [![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-arxdsilva-xml-comp)
 
 ## XML-Comparer
-Made this software to help [RimWorld](http://rimworldgame.com/) [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
+Made this software to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
 
 (1) and maybe other indie games that uses XML
 
 ### Installing
-```go get github.com/ArxdSilva/XML-Comp```
+```
+$ go get github.com/ArxdSilva/XML-Comp
+```
 
 ### Running
-```xml-comp -original /path/to/language/english -translation /path/to/language/translation```
+```shell
+$ xml-comp -original /path/to/language/english -translation /path/to/language/translation
+```
 
 ### How this works? - RimWorld translator
 You need two paths that we call "original" & "translation", which are described bellow:
@@ -26,7 +30,7 @@ With these paths in hand you run our program and It will let you know in a `miss
 #### Dev Status
 Now It only compares containing folders in given "original" to "translation" and creates a "missingFolder.txt" file into the "translation" directory.
 
-#### XML-Comp CLI Usage
+#### XML-Comp CLI Usage (needed Go 1.7+)
 ```shell
 $ git clone github.com/arxdsilva/xml-comp
 $ cd xml-comp
@@ -34,13 +38,7 @@ $ go install
 $ xml-comp help
 ```
 
-#### To Do
-- Enter folders on "original" & "translation"
-- Store files each path on separated variables
-- Compare stored Files on 'same' folder
-- Create Same folder 'missingFiles.txt'
-- Read 'equal' files on same folder
-- Create 'missingTags.txt' starting with <--Filename Missing Tags-->
+#### To Do - Check our [Issues](https://github.com/ArxdSilva/XML-Comp/issues)
 - Compare fileB to fileA to get old tags
 - Include in 'missingTags.txt' not matching tags starting with <--Filename Not Matching Tags-->
 - Turn this project CLI viable
