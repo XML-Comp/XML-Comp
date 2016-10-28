@@ -12,12 +12,6 @@ var tests = []struct {
 	PathB    string
 	Expected error
 }{
-	// empty
-	{
-		PathA:    "",
-		PathB:    "",
-		Expected: fmt.Errorf("Empty path"),
-	},
 	// fake
 	{
 		PathA:    "fakeDir1",
