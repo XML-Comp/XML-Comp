@@ -1,37 +1,52 @@
 package comparer
 
 import (
+	"fmt"
 	"os"
+	"reflect"
 	"testing"
 )
 
+var tests = []struct {
+	PathA    string
+	PathB    string
+	Expected error
+}{
+	// empty
+	{
+		PathA:    "",
+		PathB:    "",
+		Expected: fmt.Errorf("Empty path"),
+	},
+	// fake
+	{
+		PathA:    "fakeDir1",
+		PathB:    "fakeDir2",
+		Expected: fmt.Errorf("open fakeDir1: no such file or directory"),
+	},
+}
+
 func TestCompareFolder(t *testing.T) {
-	//Testing for non-existing directories
-	instance := Data{PathA: "fakeDir1", PathB: "fakeDir2"}
-	if instance.CompareContainingFoldersAndFiles() == nil {
-		//If error = nil, then the function failed to notice fakeDirectories
-		t.Error("Oops! looks like error in existence of folders")
-	}
-	//Testing for blank values
-	instance = Data{}
-	if instance.CompareContainingFoldersAndFiles() == nil {
-		//If error nil, then the validation was somehow bypassed
-		t.Error("Oops! Error in Path validation")
+	for _, test := range tests {
+		err := CompareContainingFoldersAndFiles(test.PathA, test.PathB)
+		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
+			t.Errorf("Wanted error %v, got %v", test.Expected, err)
+		}
 	}
 	//Testing for actual folders
 	//the code will create 2 directories with files
 	tmpDir := os.TempDir()
-	pathA := tmpDir + "/_Dir1/subDir/superSub"
-	err := os.MkdirAll(pathA, 0777)
+	PathA := tmpDir + "_Dir1/subDir/superSub"
+	err := os.MkdirAll(PathA, 0777)
 	if err != nil {
-		t.Fatalf("MkdirAll %q: %s", pathA, err)
+		t.Fatalf("MkdirAll %q: %s", PathA, err)
 	}
-	pathB := tmpDir + "/_Dir2/subDir"
-	err = os.MkdirAll(pathB, 0777)
+	PathB := tmpDir + "_Dir2/subDir"
+	err = os.MkdirAll(PathB, 0777)
 	if err != nil {
-		t.Fatalf("MkdirAll %q: %s", pathB, err)
+		t.Fatalf("MkdirAll %q: %s", PathB, err)
 	}
-	instance = Data{PathA: pathA, PathB: pathB}
-	t.Log(instance.CompareContainingFoldersAndFiles())
-	//Logging as output is in form of error
+	// Need to fix this test
+	err = CompareContainingFoldersAndFiles(PathA, PathB)
+	fmt.Println(err)
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ArxdSilva/XML-Comp/comparer"
+	c "github.com/ArxdSilva/XML-Comp/comparer"
 )
 
 const (
@@ -28,8 +28,7 @@ func main() {
 		pathA := os.Args[1]
 		pathB := os.Args[2]
 		fmt.Println("Creating instance ...")
-		instance := comparer.Data{PathA: pathA, PathB: pathB}
 		fmt.Println("Output:-")
-		fmt.Println(instance.CompareContainingFoldersAndFiles())
+		fmt.Println(c.CompareContainingFoldersAndFiles(pathA, pathB))
 	}
 }
