@@ -42,5 +42,7 @@ func TestCompareFolder(t *testing.T) {
 	}
 	// Need to fix this test
 	err = CompareContainingFoldersAndFiles(PathA, PathB)
-	fmt.Println(err)
+	if err != nil {
+		t.Errorf("Wanted error <nil>, got %v", err)
+	}
 }

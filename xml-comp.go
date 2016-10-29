@@ -8,8 +8,12 @@ import (
 	c "github.com/ArxdSilva/XML-Comp/comparer"
 )
 
-var pathA = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
-var pathB = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
+const (
+	Version = "0.0.21"
+)
+
+var original = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
+var translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
 
 func main() {
 	flag.Parse()
@@ -19,13 +23,13 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-	// If either pathA or pathB not provided exit
-	if len(*pathA) == 0 || len(*pathB) == 0 {
+	// If either original or translation not provided exit
+	if len(*original) == 0 || len(*translation) == 0 {
 		flag.Usage()
 		os.Exit(1)
 	}
 
 	fmt.Println("Creating instance ...")
 	fmt.Println("Output:-")
-	fmt.Println(c.CompareContainingFoldersAndFiles(*pathA, *pathB))
+	fmt.Println(c.CompareContainingFoldersAndFiles(*original, *translation))
 }
