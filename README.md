@@ -38,6 +38,8 @@ $ go install
 $ xml-comp help
 ```
 
-#### To Do - Check our [Issues](https://github.com/ArxdSilva/XML-Comp/issues)
-- Compare fileB to fileA to get old tags
-- Include in 'missingTags.txt' not matching tags starting with <--Filename Not Matching Tags-->
+#### To Do - Check our [Issues](https://github.com/ArxdSilva/XML-Comp/issues) & [Milestones]()
+- [Compare fileB to fileA to get old tags](https://github.com/ArxdSilva/XML-Comp/issues/7)
+- [Include in 'missingTags.txt' not matching tags](https://github.com/ArxdSilva/XML-Comp/issues/9)
+- [GUI](https://github.com/ArxdSilva/XML-Comp/issues/10)
+- [Installer](https://github.com/ArxdSilva/XML-Comp/issues/12)
