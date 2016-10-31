@@ -28,7 +28,7 @@ Me again: "translation" = **/Users/arthur/Github/RimWorld-PortugueseBrazilian**
 With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
 
 #### Dev Status
-Now It only compares containing folders in given "original" to "translation" and creates a "missingFolder.txt" file into the "translation" directory.
+Now It only compares containing folders in given "original" to "translation" and creates `"missingFolders.txt"` & `"missingFiles.txt"` files into the "translation" directory.
 
 #### XML-Comp CLI Usage (needed Go 1.7+)
 ```shell
@@ -41,4 +41,3 @@ $ xml-comp help
 #### To Do - Check our [Issues](https://github.com/ArxdSilva/XML-Comp/issues)
 - Compare fileB to fileA to get old tags
 - Include in 'missingTags.txt' not matching tags starting with <--Filename Not Matching Tags-->
-- Turn this project CLI viable
