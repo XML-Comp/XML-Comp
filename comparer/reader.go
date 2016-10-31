@@ -1,7 +1,5 @@
 package comparer
 
-import ()
-
 // read recieves a path and a file and returns It's tags & an error
 func read(file, path string) ([]string, error) {
 	var tags []string
@@ -20,7 +18,7 @@ func readFiles(files []string, pathA, pathB string) error {
 			return err
 		}
 		missingTags, _ := findMissing(tagsA, tagsB)
-		mTags := File{
+		mTags := missingFile{
 			name:   "MissingTags.txt",
 			path:   pathB,
 			prefix: v,

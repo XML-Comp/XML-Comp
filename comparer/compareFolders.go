@@ -16,7 +16,7 @@ func CompareContainingFoldersAndFiles(Original, Translation string) error {
 		return err
 	}
 	if missFolders != nil {
-		mFol := File{
+		mFol := missingFile{
 			name: "missingFolders.txt",
 			path: Translation,
 		}
@@ -26,7 +26,7 @@ func CompareContainingFoldersAndFiles(Original, Translation string) error {
 		}
 	}
 	if missFiles != nil {
-		mFil := File{
+		mFil := missingFile{
 			name: "missingFiles.txt",
 			path: Translation,
 		}
@@ -90,15 +90,17 @@ func findMissing(fileFolderA, fileFolderB []string) ([]string, []string) {
 	return fileFolderA, equalFiles
 }
 
-// File defines the characteristics of a file to be created on your machine
-type File struct {
+// missingFile defines the characteristics of a file to be created on your machine
+// It is used to create "missingFiles.txt", "missingFolders.txt" or whatever
+// kind of file you want
+type missingFile struct {
 	name   string
 	path   string
 	prefix string
 }
 
-func (f File) fileCreator(miss []string) error {
-	file, err := os.Create(fmt.Sprintf("%s/%s%s.txt", f.path, f.prefix, f.name))
+func (f missingFile) fileCreator(miss []string) error {
+	file, err := os.Create(fmt.Sprintf("%s/%s%s", f.path, f.prefix, f.name))
 	defer file.Close()
 	if err != nil {
 		return err

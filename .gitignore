@@ -2,3 +2,6 @@ npm-debug.log
 node_modules
 .DS_Store
 xml-comp
+missingFiles.txt
+missingFolders.txt
+missingTags.txt
