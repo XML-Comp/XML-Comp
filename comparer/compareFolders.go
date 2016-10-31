@@ -11,29 +11,28 @@ import (
 // CompareContainingFoldersAndFiles looks to two different directories given called Original & Translation,
 // and creates a file named "missingFolders.txt" or "missingFiles.txt" or both depending on It's differences
 func CompareContainingFoldersAndFiles(Original, Translation string) error {
-	missFiles, missFolders, eqlFiles, _, err := diff(Original, Translation)
+	missFiles, missFolders, _, _, err := diff(Original, Translation)
 	if err != nil {
 		return err
 	}
 	if missFolders != nil {
-		file, err := os.Create(fmt.Sprintf("%s/missingFolders.txt", Translation))
+		mFol := File{
+			name: "missingFolders.txt",
+			path: Translation,
+		}
+		err = mFol.fileCreator(missFolders)
 		if err != nil {
 			return err
-		}
-		defer file.Close()
-		for _, v := range missFolders {
-			d := []byte(fmt.Sprintf("- %s\n", v))
-			file.Write(d)
 		}
 	}
 	if missFiles != nil {
-		file, err := os.Create(fmt.Sprintf("%s/missingFiles.txt", Translation))
+		mFil := File{
+			name: "missingFiles.txt",
+			path: Translation,
+		}
+		err = mFil.fileCreator(missFiles)
 		if err != nil {
 			return err
-		}
-		for _, v := range missFiles {
-			d := []byte(fmt.Sprintf("- %s\n", v))
-			file.Write(d)
 		}
 	}
 	return nil
@@ -89,4 +88,24 @@ func findMissing(fileFolderA, fileFolderB []string) ([]string, []string) {
 		}
 	}
 	return fileFolderA, equalFiles
+}
+
+// File defines the characteristics of a file to be created on your machine
+type File struct {
+	name   string
+	path   string
+	prefix string
+}
+
+func (f File) fileCreator(miss []string) error {
+	file, err := os.Create(fmt.Sprintf("%s/%s%s.txt", f.path, f.prefix, f.name))
+	defer file.Close()
+	if err != nil {
+		return err
+	}
+	for _, v := range miss {
+		d := []byte(fmt.Sprintf("- %s\n", v))
+		file.Write(d)
+	}
+	return nil
 }
