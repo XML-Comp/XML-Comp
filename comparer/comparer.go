@@ -91,8 +91,7 @@ func findMissing(fileFolderA, fileFolderB []string) ([]string, []string) {
 }
 
 // missingFile defines the characteristics of a file to be created on your machine
-// It is used to create "missingFiles.txt", "missingFolders.txt" or whatever
-// kind of file you want
+// We use this struct to create "missingFiles.txt", "missingFolders.txt" and "missingTags.txt"
 type missingFile struct {
 	name   string
 	path   string
