@@ -18,7 +18,7 @@ func readFiles(files []string, pathA, pathB string) error {
 			return err
 		}
 		missingTags, _ := findMissing(tagsA, tagsB)
-		mTags := missingFile{
+		mTags := MissingFile{
 			name:   "MissingTags.txt",
 			path:   pathB,
 			prefix: v,
