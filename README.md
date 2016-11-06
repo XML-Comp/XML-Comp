@@ -13,7 +13,7 @@ $ go get github.com/ArxdSilva/XML-Comp
 
 ### Running
 ```shell
-$ xml-comp -original /path/to/language/english -translation /path/to/language/translation
+$ XML-Comp -comp -original /path/to/language/english -translation /path/to/language/translation
 ```
 
 ### How this works? - RimWorld translator
