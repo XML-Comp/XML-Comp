@@ -8,29 +8,22 @@ import (
 	"sort"
 )
 
-// CompareContainingFoldersAndFiles looks to two different directories given called Original & Translation,
-// and creates a file named "missingFolders.txt" or "missingFiles.txt" or both depending on It's differences
-func CompareContainingFoldersAndFiles(Original, Translation string) error {
-	missFiles, missFolders, _, _, err := diff(Original, Translation)
+// FoldersAndFiles looks to two different directories,
+// and creates a file named "missingFolders.txt" or "missingFiles.txt"
+// with the missing files and folders
+func FoldersAndFiles(original, translation string) error {
+	missFiles, missFolders, err := diff(original, translation)
 	if err != nil {
 		return err
 	}
 	if missFolders != nil {
-		mFol := missingFile{
-			name: "missingFolders.txt",
-			path: Translation,
-		}
-		err = mFol.fileCreator(missFolders)
+		err = createOutuputFile(translation, "", "missingFolders.txt", missFolders)
 		if err != nil {
 			return err
 		}
 	}
 	if missFiles != nil {
-		mFil := missingFile{
-			name: "missingFiles.txt",
-			path: Translation,
-		}
-		err = mFil.fileCreator(missFiles)
+		err = createOutuputFile(translation, "", "missingFolders.txt", missFiles)
 		if err != nil {
 			return err
 		}
@@ -38,24 +31,20 @@ func CompareContainingFoldersAndFiles(Original, Translation string) error {
 	return nil
 }
 
-func diff(A, B string) ([]string, []string, []string, []string, error) {
-	// var dirOri, dirTrans, filesOri, filesTrans []string
+func diff(A, B string) (missFiles, missFolders []string, err error) {
 	filesInfo, err := ioutil.ReadDir(A)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, nil, err
 	}
 	dirOri, filesOri := appendFileOrDir(filesInfo)
 	filesInfo, err = ioutil.ReadDir(B)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, nil, err
 	}
 	dirTrans, filesTrans := appendFileOrDir(filesInfo)
-	missingFolders, equalFolders := findMissing(dirOri, dirTrans)
-	missingFiles, equalFiles := findMissing(filesOri, filesTrans)
-	if (len(missingFolders) > 0) || (len(missingFiles) > 0) {
-		return missingFiles, missingFolders, equalFiles, equalFolders, nil
-	}
-	return nil, nil, nil, nil, nil
+	missingFolders := findMissing(dirOri, dirTrans)
+	missingFiles := findMissing(filesOri, filesTrans)
+	return missingFiles, missingFolders, nil
 }
 
 func appendFileOrDir(filesInfo []os.FileInfo) ([]string, []string) {
@@ -71,36 +60,25 @@ func appendFileOrDir(filesInfo []os.FileInfo) ([]string, []string) {
 }
 
 // More info: https://gist.github.com/ArxdSilva/7392013cbba7a7090cbcd120b7f5ca31
-func findMissing(fileFolderA, fileFolderB []string) ([]string, []string) {
+func findMissing(fileFolderA, fileFolderB []string) []string {
 	sort.Strings(fileFolderA)
 	sort.Strings(fileFolderB)
-	var equalFiles []string
-	if reflect.DeepEqual(fileFolderA, fileFolderB) == true {
-		return nil, nil
+	if reflect.DeepEqual(fileFolderA, fileFolderB) {
+		return nil
 	}
 	for i := len(fileFolderA) - 1; i >= 0; i-- {
 		for _, vD := range fileFolderB {
 			if fileFolderA[i] == vD {
 				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
-				equalFiles = append(equalFiles, vD)
-				break
 			}
 		}
 	}
-	return fileFolderA, equalFiles
+	return fileFolderA
 }
 
-// missingFile defines the characteristics of a file to be created on your machine
-// It is used to create "missingFiles.txt", "missingFolders.txt" or whatever
-// kind of file you want
-type missingFile struct {
-	name   string
-	path   string
-	prefix string
-}
-
-func (f missingFile) fileCreator(miss []string) error {
-	file, err := os.Create(fmt.Sprintf("%s/%s%s", f.path, f.prefix, f.name))
+// createOutuputFile create the file with the missing files and folders
+func createOutuputFile(path, prefix, name string, miss []string) error {
+	file, err := os.Create(fmt.Sprintf("%s/%s%s", path, prefix, name))
 	defer file.Close()
 	if err != nil {
 		return err

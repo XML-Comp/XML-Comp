@@ -5,17 +5,14 @@ import (
 	"fmt"
 	"os"
 
-	c "github.com/ArxdSilva/XML-Comp/comparer"
+	"github.com/ArxdSilva/XML-Comp/comparer"
 )
-
-const (
-	Version = "0.0.21"
-)
-
-var original = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
-var translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
 
 func main() {
+	var (
+		original    = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
+		translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
+	)
 	flag.Parse()
 	args := os.Args
 	// If we do not have enough params or help requested
@@ -31,5 +28,5 @@ func main() {
 
 	fmt.Println("Creating instance ...")
 	fmt.Println("Output:-")
-	fmt.Println(c.CompareContainingFoldersAndFiles(*original, *translation))
+	fmt.Println(comparer.FoldersAndFiles(*original, *translation))
 }
