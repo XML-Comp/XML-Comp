@@ -27,6 +27,6 @@ func main() {
 	}
 
 	fmt.Println("Creating instance ...")
-	fmt.Println("Output:-")
+	fmt.Print("Output:- ")
 	fmt.Println(comparer.FoldersAndFiles(*original, *translation))
 }

@@ -23,33 +23,35 @@ func FoldersAndFiles(original, translation string) error {
 		}
 	}
 	if missFiles != nil {
-		err = createOutuputFile(translation, "", "missingFolders.txt", missFiles)
+		err = createOutuputFile(translation, "", "missingFiles.txt", missFiles)
 		if err != nil {
 			return err
 		}
 	}
+	err = readFiles(original, translation)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func diff(A, B string) (missFiles, missFolders []string, err error) {
-	filesInfo, err := ioutil.ReadDir(A)
+func diff(original, translation string) (missingFiles, missingFolders []string, err error) {
+	dirOri, filesOri, err := directoriesAndFiles(original)
 	if err != nil {
 		return nil, nil, err
 	}
-	dirOri, filesOri := isItFileOrFiler(filesInfo)
-	filesInfo, err = ioutil.ReadDir(B)
+	dirTrans, filesTrans, err := directoriesAndFiles(translation)
 	if err != nil {
 		return nil, nil, err
 	}
-	dirTrans, filesTrans := isItFileOrFiler(filesInfo)
-	missingFolders := findMissing(dirOri, dirTrans)
-	missingFiles := findMissing(filesOri, filesTrans)
+	missingFolders = findMissing(dirOri, dirTrans)
+	missingFiles = findMissing(filesOri, filesTrans)
 	return missingFiles, missingFolders, nil
 }
 
-// isItFileOrFiler recieves all the content from the given directory and
+// isItFileOrFolder recieves all the content from the given directory and
 // separates files from folders
-func isItFileOrFiler(filesInfo []os.FileInfo) ([]string, []string) {
+func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
 	var folders, files []string
 	for _, v := range filesInfo {
 		if v.IsDir() {
@@ -92,4 +94,13 @@ func createOutuputFile(path, prefix, name string, missing []string) error {
 		file.Write(d)
 	}
 	return nil
+}
+
+func directoriesAndFiles(language string) ([]string, []string, error) {
+	filesInfo, err := ioutil.ReadDir(language)
+	if err != nil {
+		return nil, nil, err
+	}
+	dir, files := isItFileOrFolder(filesInfo)
+	return dir, files, nil
 }

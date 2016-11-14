@@ -30,7 +30,7 @@ func Test_readFile(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		if got := readFile(tt.args.file, tt.args.path); !reflect.DeepEqual(got, tt.want) {
+		if got, _ := readFile(tt.args.file, tt.args.path); !reflect.DeepEqual(got, tt.want) {
 			t.Errorf("%q. readFile() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
@@ -38,7 +38,6 @@ func Test_readFile(t *testing.T) {
 
 func Test_readFiles(t *testing.T) {
 	type args struct {
-		files []string
 		pathA string
 		pathB string
 	}
@@ -50,7 +49,6 @@ func Test_readFiles(t *testing.T) {
 		{
 			name: "test reading no files",
 			args: args{
-				files: []string{},
 				pathA: dirOriginal,
 				pathB: dirTranslation,
 			},
@@ -59,7 +57,6 @@ func Test_readFiles(t *testing.T) {
 		{
 			name: "test reading multiple files",
 			args: args{
-				files: []string{"File01.xml", "File02.xml"},
 				pathA: dirOriginal,
 				pathB: dirTranslation,
 			},
@@ -67,7 +64,7 @@ func Test_readFiles(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		if err := readFiles(tt.args.files, tt.args.pathA, tt.args.pathB); (err != nil) != tt.wantErr {
+		if err := readFiles(tt.args.pathA, tt.args.pathB); (err != nil) != tt.wantErr {
 			t.Errorf("%q. readFiles() error = %v, wantErr %v", tt.name, err, tt.wantErr)
 		}
 	}
