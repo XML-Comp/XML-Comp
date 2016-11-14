@@ -28,19 +28,30 @@ func readFile(file, path string) []string {
 
 func readFiles(files []string, pathA, pathB string) error {
 	for _, file := range files {
-		tagsA := readFile(file, pathA)
-		if tagsA == nil {
-			return fmt.Errorf("Expected tagsA not nil, received: %v", tagsA)
+		tagsA, err := tags(file, pathA)
+		if err != nil {
+			return err
 		}
-		tagsB := readFile(file, pathA)
-		if tagsB == nil {
-			return fmt.Errorf("Expected tagsB not nil, received: %v", tagsB)
+		tagsB, err := tags(file, pathB)
+		if err != nil {
+			return err
 		}
+		fileSplited := strings.Split(file, ".")
+		fileName := fileSplited[0] + "_"
 		missing := findMissing(tagsA, tagsB)
-		err := createOutuputFile(pathB, file, "MissingTags.txt", missing)
+		fmt.Print(missing)
+		err = createOutuputFile(pathB, fileName, "MissingTags.txt", missing)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func tags(file, path string) ([]string, error) {
+	tag := readFile(file, path)
+	if tag == nil {
+		return nil, fmt.Errorf("Expected tagsB not nil, received: %v", tag)
+	}
+	return tag, nil
 }
