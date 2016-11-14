@@ -10,6 +10,7 @@ import (
 // readFile recieves a complete path of a file and returns It's tags & an error
 func readFile(file, path string) []string {
 	inFile, _ := os.Open(path + file)
+	fmt.Println(path + file)
 	defer inFile.Close()
 	tags := []string{}
 	scanner := bufio.NewScanner(inFile)
@@ -19,7 +20,7 @@ func readFile(file, path string) []string {
 		indexStart := strings.Index(line, "<")
 		indexEnd := strings.Index(line, ">")
 		if (indexStart != -1) && (indexEnd != -1) {
-			tags = append(tags, line[indexStart:indexEnd])
+			tags = append(tags, line[indexStart:indexEnd+1])
 		}
 	}
 	return tags
