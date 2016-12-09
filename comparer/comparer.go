@@ -49,7 +49,7 @@ func diff(original, translation string) (missingFiles, missingFolders []string, 
 	return missingFiles, missingFolders, nil
 }
 
-// isItFileOrFolder recieves all the content from the given directory and
+// isItFileOrFolder receives all the content from the given directory and
 // separates files from folders
 func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
 	var folders, files []string

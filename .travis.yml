@@ -1,0 +1,16 @@
+os: osx
+language: go
+go:
+  - tip
+
+before_install:
+  - go get -t -v ./...
+
+script:
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+codecov:
+  token: 206ea2de-cf83-4fc2-b4ba-fad1e6eca0d9

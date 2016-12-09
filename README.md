@@ -1,5 +1,9 @@
+[![LICENSE](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/arxdsilva/XML-Comp)](https://goreportcard.com/report/github.com/arxdsilva/XML-Comp)
 [![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-arxdsilva-xml-comp)
+[![GoDoc](https://godoc.org/github.com/arxdsilva/xml-comp?status.png)](https://godoc.org/github.com/arxdsilva/xml-comp)
+[![codecov](https://codecov.io/gh/ArxdSilva/XML-Comp/branch/master/graph/badge.svg)](https://codecov.io/gh/ArxdSilva/XML-Comp)
+[![Travis Build Status](https://api.travis-ci.org/ArxdSilva/XML-Comp.svg?branch=master)](https://travis-ci.com/arxdsilva/xml-comp)
 
 ## XML-Comparer
 This package is a command line tool that provides the capability of comparing two directories and outputs files with differences between them, including: missing Files, missing Folders and missing Tags of .xml files. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
@@ -26,9 +30,6 @@ My path - as an example: "original" = **/Users/arthur/Library/Application Suppor
 Me again: "translation" = **/Users/arthur/Github/RimWorld-PortugueseBrazilian**
 
 With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
-
-#### Dev Status
-Now It only compares containing folders in given "original" to "translation" and creates `"missingFolders.txt"` & `"missingFiles.txt"` files into the "translation" directory.
 
 #### XML-Comp CLI Usage (needed Go 1.7+)
 ```shell
