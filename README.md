@@ -2,7 +2,7 @@
 [![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-arxdsilva-xml-comp)
 
 ## XML-Comparer
-Made this software to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
+This package will provide to you the capability of comparing two directories and will output files with missing Files, Folders and Tags of XML files. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
 
 (1) and maybe other indie games that uses XML
 
