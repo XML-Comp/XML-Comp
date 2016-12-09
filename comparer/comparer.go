@@ -9,8 +9,8 @@ import (
 )
 
 // FoldersAndFiles looks to two different directories,
-// and creates a file named "missingFolders.txt" or "missingFiles.txt"
-// with the missing files and folders
+// and creates a file named "missingFolders.txt" and/or "missingFiles.txt" and/or "<fileName>MissingTags.txt"
+// with the missing files, folders and tags on each line of the file
 func FoldersAndFiles(original, translation string) error {
 	missFiles, missFolders, err := diff(original, translation)
 	if err != nil {
