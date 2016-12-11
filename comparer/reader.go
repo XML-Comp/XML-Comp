@@ -46,8 +46,7 @@ func readFiles(original, translation string) error {
 		fileSplited := strings.Split(file, ".")
 		fileName := fileSplited[0] + "_"
 		missing := findMissing(tagsA, tagsB)
-		err = createOutuputFile(translation, fileName, "MissingTags.txt", missing)
-		if err != nil {
+		if err := createOutuputFile(translation, fileName, "MissingTags.txt", missing); err != nil {
 			return err
 		}
 	}
