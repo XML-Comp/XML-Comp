@@ -16,23 +16,19 @@ func FoldersAndFiles(original, translation string) error {
 	if err != nil {
 		return err
 	}
-
 	if missFolders != nil {
 		if err := createOutuputFile(translation, "", "missingFolders.txt", missFolders); err != nil {
 			return err
 		}
 	}
-
 	if missFiles != nil {
 		if err := createOutuputFile(translation, "", "missingFiles.txt", missFiles); err != nil {
 			return err
 		}
 	}
-
 	if err := readFiles(original, translation); err != nil {
 		return err
 	}
-
 	return nil
 }
 
