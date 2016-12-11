@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ArxdSilva/XML-Comp/comparer"
+	"github.com/XML-Comp/XML-Comp/comparer"
 )
 
 const ver = "v0.0.4"
