@@ -18,17 +18,16 @@ func main() {
 	)
 	flag.Parse()
 	args := os.Args
+	switch {
 	// If we do not have enough params or help requested
-	if len(args) < 2 || args[1] == "-h" {
+	case len(args) < 2 || args[1] == "-h":
 		flag.Usage()
 		os.Exit(1)
-	}
-	if *version {
+	case *version:
 		fmt.Println(ver)
 		os.Exit(0)
-	}
-	// If either original or translation not provided exit
-	if len(*original) == 0 || len(*translation) == 0 {
+		// If either original or translation not provided exit
+	case len(*original) == 0 || len(*translation) == 0:
 		flag.Usage()
 		os.Exit(1)
 	}
