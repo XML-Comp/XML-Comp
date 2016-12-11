@@ -32,8 +32,8 @@ func readFiles(original, translation string) error {
 	if err != nil {
 		return err
 	}
-	original = original + "/"
-	translation = translation + "/"
+	original = lastChar(original)
+	translation = lastChar(translation)
 	for _, file := range filesOri {
 		tagsA, err := readFile(file, original)
 		if err != nil {
@@ -52,4 +52,11 @@ func readFiles(original, translation string) error {
 		}
 	}
 	return nil
+}
+
+func lastChar(s string) string {
+	if s[len(s)-1:] != "/" {
+		s = s + "/"
+	}
+	return s
 }
