@@ -2,7 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/arxdsilva/XML-Comp)](https://goreportcard.com/report/github.com/arxdsilva/XML-Comp)
 [![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-arxdsilva-xml-comp)
 [![GoDoc](https://godoc.org/github.com/arxdsilva/xml-comp?status.png)](https://godoc.org/github.com/arxdsilva/xml-comp)
-[![codecov](https://codecov.io/gh/ArxdSilva/XML-Comp/branch/master/graph/badge.svg)](https://codecov.io/gh/ArxdSilva/XML-Comp)
+[![Top Level Coverage](https://coveralls.io/repos/github/ArxdSilva/XML-Comp/badge.svg?branch=master)](https://coveralls.io/github/ArxdSilva/XML-Comp?branch=master) / [![comparer coverage](https://gocover.io/_badge/github.com/ArxdSilva/xml-comp/comparer?0 "comparer coverage")](http://gocover.io/github.com/ArxdSilva/XML-Comp/comparer)
 [![Travis Build Status](https://api.travis-ci.org/ArxdSilva/XML-Comp.svg?branch=master)](https://travis-ci.com/arxdsilva/xml-comp)
 
 ## XML-Comparer
