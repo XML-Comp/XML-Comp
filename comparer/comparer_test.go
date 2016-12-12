@@ -12,7 +12,6 @@ var tests = []struct {
 	PathB    string
 	Expected error
 }{
-	// fake
 	{
 		PathA:    "fakeDir1",
 		PathB:    "fakeDir2",
@@ -27,8 +26,6 @@ func TestCompareFolder(t *testing.T) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
 	}
-	//Testing for actual folders
-	//the code will create 2 directories with files
 	tmpDir := os.TempDir()
 	PathA := tmpDir + "_Dir1/subDir/superSub"
 	err := os.MkdirAll(PathA, 0777)
@@ -40,7 +37,6 @@ func TestCompareFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("MkdirAll %q: %s", PathB, err)
 	}
-	// Need to fix this test
 	err = FoldersAndFiles(PathA, PathB)
 	if err != nil {
 		t.Errorf("Wanted error <nil>, got %v", err)

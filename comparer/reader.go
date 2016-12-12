@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-// readFile receives a complete path of a file and returns It's tags & an error
 func readFile(file, path string) ([]string, error) {
 	inFile, err := os.Open(path + file)
 	if err != nil {

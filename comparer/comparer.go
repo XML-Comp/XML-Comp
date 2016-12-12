@@ -46,8 +46,6 @@ func diff(original, translation string) (missingFiles, missingFolders []string, 
 	return missingFiles, missingFolders, nil
 }
 
-// isItFileOrFolder receives all the content from the given directory and
-// separates files from folders
 func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
 	var folders, files []string
 	for _, v := range filesInfo {
@@ -60,8 +58,6 @@ func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
 	return folders, files
 }
 
-// findMissing takes two repos and checks If B has different files from A
-// If B is missing something, It will remove from sliceA similar files or folders
 // More info: https://gist.github.com/ArxdSilva/7392013cbba7a7090cbcd120b7f5ca31
 func findMissing(fileFolderA, fileFolderB []string) []string {
 	sort.Strings(fileFolderA)
@@ -79,7 +75,6 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	return fileFolderA
 }
 
-// createOutuputFile create the file with the missing files and folders
 func createOutuputFile(path, prefix, name string, missing []string) error {
 	file, err := os.Create(fmt.Sprintf("%s/%s%s", path, prefix, name))
 	defer file.Close()
