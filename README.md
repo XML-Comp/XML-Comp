@@ -20,14 +20,14 @@ $ go get github.com/XML-Comp/XML-Comp
 $ XML-Comp -comp -original /path/to/language/english -translation /path/to/language/translation
 ```
 
-### How this works? - RimWorld translator
+### How this works?
 You need two paths that we call "original" & "translation", which are described bellow:
-- "original": Full path directory of your RimWorld English folder
+- **`"original"`**: Full path directory of your RimWorld English folder
+- **`"translation"`**: Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon)
 
-My path - as an example: "original" = **/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English**
-- "translation": Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon)
+My "original" path: **`/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English`**
 
-Me again: "translation" = **/Users/arthur/Github/RimWorld-PortugueseBrazilian**
+My "translation" path: **`/Users/arthur/Github/RimWorld-PortugueseBrazilian`**
 
 With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
 
@@ -40,5 +40,3 @@ $ xml-comp help
 ```
 
 #### To Do - Check our [Issues](https://github.com/XML-Comp/XML-Comp/issues) & [Milestones]()
-- [GUI](https://github.com/XML-Comp/XML-Comp/issues/10)
-- [Installer](https://github.com/XML-Comp/XML-Comp/issues/12)
