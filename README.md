@@ -38,5 +38,5 @@ $ cd xml-comp
 $ go install
 $ xml-comp help
 ```
-
+#### [Join our Gitter](https://gitter.im/XML-Comparer/Lobby)
 #### To Do - Check our [Issues](https://github.com/XML-Comp/XML-Comp/issues) & [Milestones]()
