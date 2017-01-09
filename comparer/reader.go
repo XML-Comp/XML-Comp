@@ -7,6 +7,9 @@ import (
 )
 
 func readFile(file, path string) ([]string, error) {
+	if file[len(file)-3:] != "xml" {
+		return nil, nil
+	}
 	inFile, err := os.Open(path + file)
 	if err != nil {
 		return nil, err

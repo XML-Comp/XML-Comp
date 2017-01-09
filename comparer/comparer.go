@@ -8,10 +8,10 @@ import (
 	"sort"
 )
 
-// FoldersAndFiles looks to two different directories,
+// Compare looks to two different directories,
 // and creates a file named "missingFolders.txt" and/or "missingFiles.txt" and/or "<fileName>MissingTags.txt"
 // with the missing files, folders and tags on each line of the file
-func FoldersAndFiles(original, translation string) error {
+func Compare(original, translation string) error {
 	missFiles, missFolders, err := diff(original, translation)
 	if err != nil {
 		return err
@@ -67,8 +67,10 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	}
 	for i := len(fileFolderA) - 1; i >= 0; i-- {
 		for _, vD := range fileFolderB {
+			fmt.Println(fileFolderA, i)
 			if fileFolderA[i] == vD {
 				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
+				break
 			}
 		}
 	}

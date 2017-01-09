@@ -21,7 +21,7 @@ var tests = []struct {
 
 func TestCompareFolder(t *testing.T) {
 	for _, test := range tests {
-		err := FoldersAndFiles(test.PathA, test.PathB)
+		err := Compare(test.PathA, test.PathB)
 		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
@@ -37,7 +37,7 @@ func TestCompareFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("MkdirAll %q: %s", PathB, err)
 	}
-	err = FoldersAndFiles(PathA, PathB)
+	err = Compare(PathA, PathB)
 	if err != nil {
 		t.Errorf("Wanted error <nil>, got %v", err)
 	}
