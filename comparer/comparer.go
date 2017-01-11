@@ -21,7 +21,7 @@ func Compare(original, translation string) error {
 			return err
 		}
 	}
-	if missFiles != nil {
+	if (missFiles != nil) && (len(missFiles) > 0) {
 		if err := createOutuputFile(translation, "", "missingFiles.txt", missFiles); err != nil {
 			return err
 		}
@@ -67,7 +67,6 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	}
 	for i := len(fileFolderA) - 1; i >= 0; i-- {
 		for _, vD := range fileFolderB {
-			fmt.Print(".")
 			if fileFolderA[i] == vD {
 				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
 				break
