@@ -42,7 +42,10 @@ func readFiles(original, translation string) error {
 			return err
 		}
 		tagsB, err := readFile(file, translation)
-		if (err != nil) || (tagsB == nil) {
+		if err != nil {
+			return err
+		}
+		if tagsB == nil {
 			continue
 		}
 		fileSplited := strings.Split(file, ".")

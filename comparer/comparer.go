@@ -67,7 +67,6 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	}
 	for i := len(fileFolderA) - 1; i >= 0; i-- {
 		for _, vD := range fileFolderB {
-			fmt.Println(fileFolderA, i)
 			if fileFolderA[i] == vD {
 				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
 				break
@@ -84,7 +83,7 @@ func createOutuputFile(path, prefix, name string, missing []string) error {
 		return err
 	}
 	for _, v := range missing {
-		d := []byte(fmt.Sprintf("- %s\n", v))
+		d := []byte(fmt.Sprintf("%s\n", v))
 		file.Write(d)
 	}
 	return nil
