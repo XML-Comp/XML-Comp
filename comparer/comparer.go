@@ -67,6 +67,7 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	}
 	for i := len(fileFolderA) - 1; i >= 0; i-- {
 		for _, vD := range fileFolderB {
+			fmt.Print(".")
 			if fileFolderA[i] == vD {
 				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
 				break
