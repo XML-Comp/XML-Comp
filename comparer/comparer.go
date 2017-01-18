@@ -26,7 +26,7 @@ func Compare(original, translation string) error {
 			return err
 		}
 	}
-	if err := readFiles(original, translation); err != nil {
+	if err := readPaths(original, translation); err != nil {
 		return err
 	}
 	return nil

@@ -47,14 +47,6 @@ func Test_readFiles(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "test reading no files",
-			args: args{
-				pathA: dirOriginal,
-				pathB: dirTranslation,
-			},
-			wantErr: false,
-		},
-		{
 			name: "test reading multiple files",
 			args: args{
 				pathA: dirOriginal,
@@ -64,8 +56,8 @@ func Test_readFiles(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		if err := readFiles(tt.args.pathA, tt.args.pathB); (err != nil) != tt.wantErr {
-			t.Errorf("%q. readFiles() error = %v, wantErr %v", tt.name, err, tt.wantErr)
+		if err := readPaths(tt.args.pathA, tt.args.pathB); (err != nil) != tt.wantErr {
+			t.Errorf("%q | readPaths error: %v, wantErr %v", tt.name, err, tt.wantErr)
 		}
 	}
 }

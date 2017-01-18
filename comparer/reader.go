@@ -29,7 +29,7 @@ func readFile(file, path string) ([]string, error) {
 	return tags, nil
 }
 
-func readFiles(original, translation string) error {
+func readPaths(original, translation string) error {
 	_, filesOri, err := directoriesAndFiles(original)
 	if err != nil {
 		return err
@@ -41,10 +41,8 @@ func readFiles(original, translation string) error {
 		if err != nil {
 			return err
 		}
-		tagsB, err := readFile(file, translation)
-		if err != nil {
-			return err
-		}
+		// this error can be ignored, since Compare func already checks missingFiles on the translation
+		tagsB, _ := readFile(file, translation)
 		if tagsB == nil {
 			continue
 		}
