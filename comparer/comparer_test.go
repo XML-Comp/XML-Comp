@@ -2,6 +2,7 @@ package comparer
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
@@ -26,9 +27,13 @@ func TestCompareFolder(t *testing.T) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
 	}
-	tmpDir := os.TempDir()
+	tmpDir, err := ioutil.TempDir("", "")
+	if err != nil {
+		t.Fatalf("TempDir %q: %s", tmpDir, err)
+	}
 	PathA := tmpDir + "_Dir1/subDir/superSub"
-	err := os.MkdirAll(PathA, 0777)
+	err = os.MkdirAll(PathA, 0777)
+
 	if err != nil {
 		t.Fatalf("MkdirAll %q: %s", PathA, err)
 	}
