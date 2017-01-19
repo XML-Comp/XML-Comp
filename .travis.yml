@@ -2,7 +2,11 @@ language: go
 go:
   - tip
 
-sudo: required
+before_install:
+  - go get -t -v ./...
+
+script:
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
 
 install:
   - go get github.com/mattn/goveralls
