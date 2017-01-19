@@ -79,7 +79,7 @@ func readFiles(orgF, trltF string) error {
 	}
 	defer f.Close()
 	for _, t := range missingTags {
-		if _, err = f.WriteString(fmt.Sprintf("<%s>Add your translation here</%s>\n", t, t)); err != nil {
+		if _, err = f.WriteString(fmt.Sprintf("%sAdd your translation here%s/%s\n", t, t[:1], t[1:])); err != nil {
 			return err
 		}
 	}
