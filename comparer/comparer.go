@@ -1,100 +1,98 @@
 package comparer
 
 import (
-	"fmt"
-	"io/ioutil"
+	"bufio"
 	"os"
-	"reflect"
-	"sort"
+	"path/filepath"
+	"strings"
 )
 
-// Compare looks to two different directories,
-// and creates a file named "missingFolders.txt" and/or "missingFiles.txt" and/or "<fileName>MissingTags.txt"
-// with the missing files, folders and tags on each line of the file
 func Compare(original, translation string) error {
-	missFiles, missFolders, err := diff(original, translation)
+	// Criar diff de uma pasta em outra
+	originalDir, err := readDir(original)
 	if err != nil {
 		return err
 	}
-	if missFolders != nil {
-		if err := createOutuputFile(translation, "", "missingFolders.txt", missFolders); err != nil {
+	for _, f := range originalDir {
+		if f.IsDir() {
+			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+		} else {
+			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+		}
+		if err != nil {
 			return err
 		}
-	}
-	if (missFiles != nil) && (len(missFiles) > 0) {
-		if err := createOutuputFile(translation, "", "missingFiles.txt", missFiles); err != nil {
-			return err
-		}
-	}
-	if err := readPaths(original, translation); err != nil {
-		return err
 	}
 	return nil
 }
 
-func diff(original, translation string) (missingFiles, missingFolders []string, err error) {
-	dirOri, filesOri, err := directoriesAndFiles(original)
+func readDir(path string) ([]os.FileInfo, error) {
+	err := os.Chdir(path)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	dirTrans, filesTrans, err := directoriesAndFiles(translation)
+	fi, err := os.Open(path)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	missingFolders = findMissing(dirOri, dirTrans)
-	missingFiles = findMissing(filesOri, filesTrans)
-	return missingFiles, missingFolders, nil
+	defer fi.Close()
+	file, err := fi.Readdir(0)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
+
 }
 
-func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
-	var folders, files []string
-	for _, v := range filesInfo {
-		// need to refactor this to make Compare recursive
-		if v.IsDir() {
-			folders = append(folders, v.Name())
-		} else {
-			files = append(files, v.Name())
-		}
+func readFiles(orgF, trltF string) error {
+	err := os.Chdir(filepath.Dir(orgF))
+	if err != nil {
+		return err
 	}
-	return folders, files
-}
-
-// More info: https://gist.github.com/ArxdSilva/7392013cbba7a7090cbcd120b7f5ca31
-func findMissing(fileFolderA, fileFolderB []string) []string {
-	sort.Strings(fileFolderA)
-	sort.Strings(fileFolderB)
-	if reflect.DeepEqual(fileFolderA, fileFolderB) {
+	fName := strings.Split(orgF, "/")
+	fileName := fName[len(fName)-1]
+	orgTags, err := readFile(fileName, filepath.Dir(orgF))
+	if err != nil {
+		return err
+	}
+	fName = strings.Split(trltF, "/")
+	fileName = fName[len(fName)-1]
+	trltTags, err := readFile(fileName, filepath.Dir(trltF))
+	if err != nil {
+		// create empty file with orgTags
 		return nil
 	}
-	for i := len(fileFolderA) - 1; i >= 0; i-- {
-		for _, vD := range fileFolderB {
-			if fileFolderA[i] == vD {
-				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
-				break
-			}
-		}
+	if trltTags == nil {
+		return nil
 	}
-	return fileFolderA
-}
-
-func createOutuputFile(path, prefix, name string, missing []string) error {
-	file, err := os.Create(fmt.Sprintf("%s/%s%s", path, prefix, name))
-	defer file.Close()
-	if err != nil {
-		return err
-	}
-	for _, v := range missing {
-		d := []byte(fmt.Sprintf("%s\n", v))
-		file.Write(d)
+	// compara tags
+	if orgTags == nil {
+		return nil
 	}
 	return nil
 }
 
-func directoriesAndFiles(language string) ([]string, []string, error) {
-	filesInfo, err := ioutil.ReadDir(language)
-	if err != nil {
-		return nil, nil, err
+// Erros: nao conseguir ler o arquivo
+// tags: formato errado de arquivo == nil
+func readFile(file, path string) ([]string, error) {
+	if file[len(file)-3:] != "xml" {
+		return nil, nil
 	}
-	dir, files := isItFileOrFolder(filesInfo)
-	return dir, files, nil
+	inFile, err := os.Open(filepath.Join(path, file))
+	if err != nil {
+		return nil, err
+	}
+	defer inFile.Close()
+	tags := []string{}
+	scanner := bufio.NewScanner(inFile)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		line := scanner.Text()
+		indexStart := strings.Index(line, "<")
+		indexEnd := strings.Index(line, ">")
+		if (indexStart != -1) && (indexEnd != -1) {
+			tags = append(tags, line[indexStart:indexEnd+1])
+		}
+	}
+	return tags, nil
 }
