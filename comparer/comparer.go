@@ -2,13 +2,16 @@ package comparer
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
+	"sort"
 	"strings"
 )
 
 func Compare(original, translation string) error {
-	// Criar diff de uma pasta em outra
+	// Create Folders Diff
 	originalDir, err := readDir(original)
 	if err != nil {
 		return err
@@ -65,15 +68,26 @@ func readFiles(orgF, trltF string) error {
 	if trltTags == nil {
 		return nil
 	}
-	// compara tags
-	if orgTags == nil {
+	missingTags := findMissing(orgTags, trltTags)
+	if missingTags == nil {
 		return nil
+	}
+	// create missingTags in file
+	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	for _, t := range missingTags {
+		if _, err = f.WriteString(fmt.Sprintf("<%s>Add your translation here</%s>\n", t, t)); err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
-// Erros: nao conseguir ler o arquivo
-// tags: formato errado de arquivo == nil
+// Errors: cant read file
+// tags: wrong file format slice => nil
 func readFile(file, path string) ([]string, error) {
 	if file[len(file)-3:] != "xml" {
 		return nil, nil
@@ -95,4 +109,22 @@ func readFile(file, path string) ([]string, error) {
 		}
 	}
 	return tags, nil
+}
+
+// More info: https://gist.github.com/ArxdSilva/7392013cbba7a7090cbcd120b7f5ca31
+func findMissing(fileFolderA, fileFolderB []string) []string {
+	sort.Strings(fileFolderA)
+	sort.Strings(fileFolderB)
+	if reflect.DeepEqual(fileFolderA, fileFolderB) {
+		return nil
+	}
+	for i := len(fileFolderA) - 1; i >= 0; i-- {
+		for _, vD := range fileFolderB {
+			if fileFolderA[i] == vD {
+				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
+				break
+			}
+		}
+	}
+	return fileFolderA
 }
