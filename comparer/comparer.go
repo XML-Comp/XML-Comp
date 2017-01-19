@@ -62,7 +62,16 @@ func readFiles(orgF, trltF string) error {
 	fileName = fName[len(fName)-1]
 	trltTags, err := readFile(fileName, filepath.Dir(trltF))
 	if err != nil {
-		// create empty file with orgTags
+		// create empty file
+		err = os.Chdir(filepath.Dir(trltF))
+		if err != nil {
+			return err
+		}
+		file, err := os.Create(fmt.Sprintf("%s.xml", fileName))
+		defer file.Close()
+		if err != nil {
+			return err
+		}
 		return nil
 	}
 	if trltTags == nil {
