@@ -49,6 +49,7 @@ func diff(original, translation string) (missingFiles, missingFolders []string, 
 func isItFileOrFolder(filesInfo []os.FileInfo) ([]string, []string) {
 	var folders, files []string
 	for _, v := range filesInfo {
+		// need to refactor this to make Compare recursive
 		if v.IsDir() {
 			folders = append(folders, v.Name())
 		} else {
