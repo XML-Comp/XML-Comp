@@ -11,51 +11,50 @@ import (
 
 var wd, _ = os.Getwd()
 
-var tests = []struct {
-	name     string
-	PathA    string
-	PathB    string
-	Expected error
-}{
-	{
-		name:     "no dir",
-		PathA:    "fakeDir1",
-		PathB:    "fakeDir2",
-		Expected: fmt.Errorf("chdir fakeDir1: no such file or directory"),
-	},
-	// {
-	// 	name:     "testPaths",
-	// 	PathA:    filepath.Join(wd, "testPaths", "Original"),
-	// 	PathB:    filepath.Join(wd, "testPaths", "Translation"),
-	// 	Expected: nil,
-	// },
-}
-
 func TestCompareFolder(t *testing.T) {
+	tests := []struct {
+		name     string
+		PathA    string
+		PathB    string
+		Expected error
+	}{
+		{
+			name:     "no dir",
+			PathA:    "fakeDir1",
+			PathB:    "fakeDir2",
+			Expected: fmt.Errorf("chdir fakeDir1: no such file or directory"),
+		},
+		// {
+		// 	name:     "testPaths",
+		// 	PathA:    filepath.Join(wd, "testPaths", "Original"),
+		// 	PathB:    filepath.Join(wd, "testPaths", "Translation"),
+		// 	Expected: nil,
+		// },
+	}
 	for _, test := range tests {
 		err := Compare(test.PathA, test.PathB)
 		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
 	}
-	tmpDir, err := ioutil.TempDir("", "")
+	tmpDir, err := ioutil.TempDir("tmp", "")
 	if err != nil {
 		t.Fatalf("TempDir %q: %s", tmpDir, err)
 	}
-	PathA := tmpDir + "_Dir1/subDir/superSub"
+	PathA := filepath.Join(tmpDir, "_Dir1", "subDir", "superSub")
 	err = os.MkdirAll(PathA, 0777)
 
 	if err != nil {
 		t.Fatalf("MkdirAll %q: %s", PathA, err)
 	}
-	PathB := tmpDir + "_Dir2/subDir"
+	PathB := filepath.Join(tmpDir, "_Dir2", "subDir")
 	err = os.MkdirAll(PathB, 0777)
 	if err != nil {
 		t.Fatalf("MkdirAll %q: %s", PathB, err)
 	}
 	err = Compare(PathA, PathB)
 	if err != nil {
-		t.Errorf("Wanted error <nil>, got %v", err)
+		t.Fatalf("Wanted error <nil>, got %v", err)
 	}
 }
 
@@ -104,7 +103,6 @@ func Test_findMissing(t *testing.T) {
 		args args
 		want []string
 	}{
-		// TODO: Add test cases.
 		{
 			name: "find missing Tags",
 			args: args{

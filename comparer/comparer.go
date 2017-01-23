@@ -44,7 +44,6 @@ func readDir(path string) ([]os.FileInfo, error) {
 		return nil, err
 	}
 	return file, nil
-
 }
 
 func readFiles(orgF, trltF string) error {
