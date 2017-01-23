@@ -67,10 +67,10 @@ func readFiles(orgF, trltF string) error {
 		if err != nil {
 			return err
 		}
-		file, err := os.Create(fmt.Sprintf("%s.xml", fileName))
+		file, errCreate := os.Create(fileName)
 		defer file.Close()
-		if err != nil {
-			return err
+		if errCreate != nil {
+			return errCreate
 		}
 		return nil
 	}
@@ -88,7 +88,13 @@ func readFiles(orgF, trltF string) error {
 	}
 	defer f.Close()
 	for _, t := range missingTags {
-		if _, err = f.WriteString(fmt.Sprintf("%sAdd your translation here%s/%s\n", t, t[:1], t[1:])); err != nil {
+		if (strings.Compare(string(t[:3]), "<!-") == 0) || (strings.Compare(string(t[:3]), "<--") == 0) {
+			if _, err = f.WriteString(fmt.Sprintf("\n%s", t)); err != nil {
+				return err
+			}
+			continue
+		}
+		if _, err = f.WriteString(fmt.Sprintf("\n%sAdd your translation here%s/%s", t, t[:1], t[1:])); err != nil {
 			return err
 		}
 	}
