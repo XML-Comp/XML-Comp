@@ -61,7 +61,6 @@ func readFiles(orgF, trltF string) error {
 	fileName = fName[len(fName)-1]
 	trltTags, err := readFile(fileName, filepath.Dir(trltF))
 	if err != nil {
-		// create empty file
 		err = os.Chdir(filepath.Dir(trltF))
 		if err != nil {
 			return err
@@ -80,7 +79,6 @@ func readFiles(orgF, trltF string) error {
 	if missingTags == nil {
 		return nil
 	}
-	// create missingTags in file
 	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
@@ -100,8 +98,6 @@ func readFiles(orgF, trltF string) error {
 	return nil
 }
 
-// Errors: cant read file
-// tags: wrong file format slice => nil
 func readFile(file, path string) ([]string, error) {
 	if file[len(file)-3:] != "xml" {
 		return nil, nil
@@ -118,8 +114,12 @@ func readFile(file, path string) ([]string, error) {
 		line := scanner.Text()
 		indexStart := strings.Index(line, "<")
 		indexEnd := strings.Index(line, ">")
+		tag := line[indexStart : indexEnd+1]
+		if string(tag[0]) == "/" {
+			continue
+		}
 		if (indexStart != -1) && (indexEnd != -1) {
-			tags = append(tags, line[indexStart:indexEnd+1])
+			tags = append(tags, tag)
 		}
 	}
 	return tags, nil
