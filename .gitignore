@@ -2,3 +2,5 @@
 xml-comp
 missing*
 *_MissingTags.txt
+comparer/testPaths/Translation/File02.xml
+comparer/testPaths/Translation/File03.xml

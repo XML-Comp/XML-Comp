@@ -2,7 +2,6 @@ package comparer
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -26,8 +25,8 @@ func TestCompareFolder(t *testing.T) {
 		},
 		// {
 		// 	name:     "testPaths",
-		// 	PathA:    filepath.Join(wd, "testPaths", "Original"),
-		// 	PathB:    filepath.Join(wd, "testPaths", "Translation"),
+		// 	PathA:    filepath.Join(wd, "testPaths/Original"),
+		// 	PathB:    filepath.Join(wd, "testPaths/Translation"),
 		// 	Expected: nil,
 		// },
 	}
@@ -36,25 +35,6 @@ func TestCompareFolder(t *testing.T) {
 		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
-	}
-	tmpDir, err := ioutil.TempDir("tmp", "")
-	if err != nil {
-		t.Fatalf("TempDir %q: %s", tmpDir, err)
-	}
-	PathA := filepath.Join(tmpDir, "_Dir1", "subDir", "superSub")
-	err = os.MkdirAll(PathA, 0777)
-
-	if err != nil {
-		t.Fatalf("MkdirAll %q: %s", PathA, err)
-	}
-	PathB := filepath.Join(tmpDir, "_Dir2", "subDir")
-	err = os.MkdirAll(PathB, 0777)
-	if err != nil {
-		t.Fatalf("MkdirAll %q: %s", PathB, err)
-	}
-	err = Compare(PathA, PathB)
-	if err != nil {
-		t.Fatalf("Wanted error <nil>, got %v", err)
 	}
 }
 
@@ -116,6 +96,28 @@ func Test_findMissing(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := findMissing(tt.args.fileFolderA, tt.args.fileFolderB); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("findMissing() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_readFiles(t *testing.T) {
+	tests := []struct {
+		name    string
+		orgF    string
+		trltF   string
+		wantErr bool
+	}{
+		{
+			orgF:    "testPaths/Original/File01.xml",
+			trltF:   "testPaths/Translation/File01.xml",
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := readFiles(filepath.Join(wd, tt.orgF), filepath.Join(wd, tt.trltF)); (err != nil) != tt.wantErr {
+				t.Errorf("readFiles() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
