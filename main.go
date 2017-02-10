@@ -19,20 +19,21 @@ func main() {
 	flag.Parse()
 	args := os.Args
 	switch {
-	// If we do not have enough params or help requested
 	case len(args) < 2 || args[1] == "-h":
 		flag.Usage()
 		os.Exit(1)
 	case *version:
 		fmt.Println(ver)
 		os.Exit(0)
-		// If either original or translation not provided exit
 	case len(*original) == 0 || len(*translation) == 0:
 		flag.Usage()
 		os.Exit(1)
 	}
-
 	fmt.Println("Creating instance ...")
 	fmt.Print("Output:- ")
-	fmt.Println(comparer.Compare(*original, *translation))
+	err := comparer.Compare(*original, *translation)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Docs comparisons are DONE!")
 }
