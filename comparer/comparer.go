@@ -10,15 +10,20 @@ import (
 	"strings"
 )
 
-func Compare(original, translation string) error {
-	// Create Folders Diff
+var translationName string
+
+func Compare(original, translation string, b bool) error {
+	if b {
+		populateTranslationName(translation)
+	}
 	originalDir, err := readDir(original)
 	if err != nil {
 		return err
 	}
 	for _, f := range originalDir {
 		if f.IsDir() {
-			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			checkTransDirExists(f.Name())
+			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()), false)
 		} else {
 			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
 		}
@@ -141,4 +146,31 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 		}
 	}
 	return fileFolderA
+}
+
+func checkTransDirExists(dir string) error {
+	dir = strings.Replace(dir, "English", translationName, 1)
+	_, err := os.Open(dir)
+	if err != nil {
+		dirSep := strings.Split(dir, "/")
+		dD := dir[:len(dir)-len(dirSep[len(dirSep)-1])]
+		os.Chdir(dD)
+		errMkdir := os.Mkdir(dirSep[len(dirSep)-1], 0700)
+		if err != nil {
+			return errMkdir
+		}
+	}
+	return nil
+}
+
+func populateTranslationName(t string) {
+	var splitTransPath []string
+	slash := strings.Contains("/", t)
+	if slash {
+		splitTransPath = strings.Split(t, "/")
+	} else {
+		splitTransPath = strings.Split(t, "\\")
+	}
+	translationName = splitTransPath[len(splitTransPath)-1]
+	return
 }

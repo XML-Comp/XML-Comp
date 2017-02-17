@@ -31,7 +31,7 @@ func main() {
 	}
 	fmt.Println("Creating instance ...")
 	fmt.Print("Output:- ")
-	err := comparer.Compare(*original, *translation)
+	err := comparer.Compare(*original, *translation, true)
 	if err != nil {
 		panic(err)
 	}
