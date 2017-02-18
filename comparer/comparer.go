@@ -10,7 +10,10 @@ import (
 	"strings"
 )
 
-var translationName string
+var (
+	translationName     string
+	docs, lines, inNeed int
+)
 
 func Compare(original, translation string, b bool) error {
 	if b {
@@ -25,12 +28,14 @@ func Compare(original, translation string, b bool) error {
 			checkTransDirExists(f.Name())
 			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()), false)
 		} else {
+			docs += 2
 			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
 		}
 		if err != nil {
 			return err
 		}
 	}
+	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", docs, lines, inNeed)
 	return nil
 }
 
@@ -43,11 +48,11 @@ func readDir(path string) ([]os.FileInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer fi.Close()
 	file, err := fi.Readdir(0)
 	if err != nil {
 		return nil, err
 	}
+	defer fi.Close()
 	return file, nil
 }
 
@@ -84,6 +89,7 @@ func readFiles(orgF, trltF string) error {
 	if missingTags == nil {
 		return nil
 	}
+	inNeed += len(missingTags)
 	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
@@ -114,8 +120,8 @@ func readFile(file, path string) ([]string, error) {
 	defer inFile.Close()
 	tags := []string{}
 	scanner := bufio.NewScanner(inFile)
-	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
+		lines++
 		line := scanner.Text()
 		indexStart := strings.Index(line, "<")
 		indexEnd := strings.Index(line, ">")
@@ -152,10 +158,10 @@ func checkTransDirExists(dir string) error {
 	dir = strings.Replace(dir, "English", translationName, 1)
 	_, err := os.Open(dir)
 	if err != nil {
-		dirSep := strings.Split(dir, "/")
-		dD := dir[:len(dir)-len(dirSep[len(dirSep)-1])]
-		os.Chdir(dD)
-		errMkdir := os.Mkdir(dirSep[len(dirSep)-1], 0700)
+		splitedDirectory := strings.Split(dir, "/")
+		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])]
+		os.Chdir(parentDirFromSplit)
+		errMkdir := os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
 		if err != nil {
 			return errMkdir
 		}

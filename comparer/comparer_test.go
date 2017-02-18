@@ -23,12 +23,6 @@ func TestCompareFolder(t *testing.T) {
 			PathB:    "fakeDir2",
 			Expected: fmt.Errorf("chdir fakeDir1: no such file or directory"),
 		},
-		// {
-		// 	name:     "testPaths",
-		// 	PathA:    filepath.Join(wd, "testPaths/Original"),
-		// 	PathB:    filepath.Join(wd, "testPaths/Translation"),
-		// 	Expected: nil,
-		// },
 	}
 	for _, test := range tests {
 		err := Compare(test.PathA, test.PathB, false)
@@ -144,5 +138,12 @@ func Test_checkTransDir(t *testing.T) {
 	err := os.Remove(filepath.Join(wd, "Translation", "Dir1"))
 	if err != nil {
 		t.Errorf("Error = %v", err)
+	}
+}
+
+func Test_populateTranslationName(t *testing.T) {
+	populateTranslationName("Spanish")
+	if translationName != "Spanish" {
+		t.Errorf("populateTranslationName() error => wanted `Spanish and got` %v", translationName)
 	}
 }
