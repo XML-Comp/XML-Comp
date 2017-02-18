@@ -12,7 +12,7 @@ import (
 
 var (
 	translationName     string
-	docs, lines, inNeed int
+	Docs, Lines, InNeed int
 )
 
 func Compare(original, translation string, b bool) error {
@@ -28,14 +28,13 @@ func Compare(original, translation string, b bool) error {
 			checkTransDirExists(f.Name())
 			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()), false)
 		} else {
-			docs += 2
+			Docs += 2
 			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
 		}
 		if err != nil {
 			return err
 		}
 	}
-	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", docs, lines, inNeed)
 	return nil
 }
 
@@ -89,14 +88,17 @@ func readFiles(orgF, trltF string) error {
 	if missingTags == nil {
 		return nil
 	}
-	inNeed += len(missingTags)
 	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	for _, t := range missingTags {
-		if (strings.Compare(string(t[:3]), "<!-") == 0) || (strings.Compare(string(t[:3]), "<--") == 0) {
+		if string(t[1]) == "/" {
+			continue
+		}
+		InNeed++
+		if (strings.Compare(string(t[:3]), "<!-") == 0) || (strings.Compare(string(t[:3]), "<--") == 0) || (strings.Compare(string(t[:5]), "<?xml") == 0) {
 			if _, err = f.WriteString(fmt.Sprintf("\n%s", t)); err != nil {
 				return err
 			}
@@ -121,10 +123,13 @@ func readFile(file, path string) ([]string, error) {
 	tags := []string{}
 	scanner := bufio.NewScanner(inFile)
 	for scanner.Scan() {
-		lines++
+		Lines++
 		line := scanner.Text()
 		indexStart := strings.Index(line, "<")
 		indexEnd := strings.Index(line, ">")
+		if (len(line) == 0) || indexStart < 0 || indexEnd < 0 {
+			continue
+		}
 		tag := line[indexStart : indexEnd+1]
 		if string(tag[0]) == "/" {
 			continue

@@ -36,4 +36,5 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Docs comparisons are DONE!")
+	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", comparer.Docs, comparer.Lines, comparer.InNeed)
 }
