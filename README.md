@@ -17,7 +17,7 @@ $ go get github.com/XML-Comp/XML-Comp
 
 ### Running
 ```shell
-$ XML-Comp -comp -original /path/to/language/english -translation /path/to/language/translation
+$ XML-Comp -original /path/to/language/english -translation /path/to/language/translation
 ```
 
 ### How this works?
