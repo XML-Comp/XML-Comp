@@ -39,6 +39,8 @@ To compare any kind of files, all you need is to use the flag `-doc <type name>`
 $ XML-Comp -doc html -original path/to/It -translation path/to/It
 ```
 
+OBS: This is not required, by default It's comparing all `.xml` files that are encountered.
+
 #### XML-Comp CLI Usage (needed Go 1.7+)
 ```shell
 $ git clone github.com/XML-Comp/xml-comp

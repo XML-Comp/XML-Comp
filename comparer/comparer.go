@@ -11,8 +11,14 @@ import (
 )
 
 var (
-	translationName, DocType string
-	Docs, Lines, InNeed      int
+	// DocType is required If you want to use the package, so don't
+	// forget to instantiate It before using the Compare function
+	DocType         string
+	translationName string
+	// Docs , Lines and InNeed are `metrics` of how the program is running
+	Docs   int
+	Lines  int
+	InNeed int
 )
 
 func Compare(original, translation string, b bool) error {

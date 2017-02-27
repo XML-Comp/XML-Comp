@@ -14,7 +14,7 @@ func main() {
 	var (
 		original    = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
 		translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
-		docType     = flag.String("doc", "xml", "Type of the Doc that you want to compare")
+		docType     = flag.String("doc", "xml", "Type of the Doc that you want to compare (not required)")
 		version     = flag.Bool("version", false, "Prints current version")
 	)
 	flag.Parse()
