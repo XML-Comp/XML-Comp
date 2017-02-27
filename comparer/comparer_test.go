@@ -33,6 +33,7 @@ func TestCompareFolder(t *testing.T) {
 }
 
 func Test_readFile(t *testing.T) {
+	DocType = "xml"
 	type args struct {
 		file string
 		path string

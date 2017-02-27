@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	translationName     string
-	Docs, Lines, InNeed int
+	translationName, DocType string
+	Docs, Lines, InNeed      int
 )
 
 func Compare(original, translation string, b bool) error {
@@ -112,7 +112,8 @@ func readFiles(orgF, trltF string) error {
 }
 
 func readFile(file, path string) ([]string, error) {
-	if file[len(file)-3:] != "xml" {
+	splittedFileName := strings.Split(file, ".")
+	if splittedFileName[len(splittedFileName)-1] != DocType {
 		return nil, nil
 	}
 	inFile, err := os.Open(filepath.Join(path, file))

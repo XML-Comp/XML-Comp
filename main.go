@@ -8,12 +8,13 @@ import (
 	"github.com/XML-Comp/XML-Comp/comparer"
 )
 
-const ver = "v0.0.4"
+const ver = "v0.43"
 
 func main() {
 	var (
 		original    = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
 		translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
+		docType     = flag.String("doc", "xml", "Type of the Doc that you want to compare")
 		version     = flag.Bool("version", false, "Prints current version")
 	)
 	flag.Parse()
@@ -31,6 +32,7 @@ func main() {
 	}
 	fmt.Println("Creating instance ...")
 	fmt.Print("Output:- ")
+	comparer.DocType = *docType
 	err := comparer.Compare(*original, *translation, true)
 	if err != nil {
 		panic(err)
