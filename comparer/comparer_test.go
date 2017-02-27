@@ -30,6 +30,10 @@ func TestCompareFolder(t *testing.T) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
 	}
+	err := Compare(filepath.Join(wd, "testPaths", "Original"), filepath.Join(wd, "testPaths", "Translation"), true)
+	if err != nil {
+		t.Errorf("Wanted error %v, got %v", nil, err)
+	}
 }
 
 func Test_readFile(t *testing.T) {
@@ -104,6 +108,7 @@ func Test_readFiles(t *testing.T) {
 		wantErr bool
 	}{
 		{
+			name:    "testing equal files",
 			orgF:    "testPaths/Original/File01.xml",
 			trltF:   "testPaths/Translation/File01.xml",
 			wantErr: false,
@@ -115,6 +120,10 @@ func Test_readFiles(t *testing.T) {
 				t.Errorf("readFiles() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
+	}
+	err := readFiles(filepath.Join(wd, "testPaths/Original/File01.xml"), filepath.Join(wd, "testPaths/Translation/File03.xml"))
+	if err != nil {
+		t.Errorf("readFiles() error = %v, wantErr %v", err, nil)
 	}
 }
 
