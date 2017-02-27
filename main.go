@@ -8,7 +8,7 @@ import (
 	"github.com/XML-Comp/XML-Comp/comparer"
 )
 
-const ver = "v0.43"
+const ver = "v0.23"
 
 func main() {
 	var (
