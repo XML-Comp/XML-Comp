@@ -32,6 +32,13 @@ My "translation" path: **`/Users/arthur/Github/RimWorld-PortugueseBrazilian`**
 
 With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
 
+#### Comparing any kind of document:
+To compare any kind of files, all you need is to use the flag `-doc <type name>`, eg `-doc html`. This will use the paths that you gave only to compare the specified type of document. Another example:
+
+```shell
+$ XML-Comp -doc html -original path/to/It -translation path/to/It
+```
+
 #### XML-Comp CLI Usage (needed Go 1.7+)
 ```shell
 $ git clone github.com/XML-Comp/xml-comp
