@@ -25,12 +25,12 @@ func TestCompareFolder(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		err := Compare(test.PathA, test.PathB, false)
+		err := Compare(test.PathA, test.PathB)
 		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
 			t.Errorf("Wanted error %v, got %v", test.Expected, err)
 		}
 	}
-	err := Compare(filepath.Join(wd, "testPaths", "Original"), filepath.Join(wd, "testPaths", "Translation"), true)
+	err := Compare(filepath.Join(wd, "testPaths", "Original"), filepath.Join(wd, "testPaths", "Translation"))
 	if err != nil {
 		t.Errorf("Wanted error %v, got %v", nil, err)
 	}
@@ -130,30 +130,23 @@ func Test_readFiles(t *testing.T) {
 func Test_checkTransDir(t *testing.T) {
 	os.Chdir("..")
 	wd, _ := os.Getwd()
-	translationName = "Translation"
 	tests := []struct {
-		d       string
+		d, t    string
 		wantErr bool
 	}{
 		{
 			d:       filepath.Join(wd, "English", "Dir1"),
+			t:       filepath.Join(wd, "Translation"),
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
-		if err := checkTransDirExists(tt.d); (err != nil) != tt.wantErr {
+		if err := checkTransDirExists(tt.d, tt.t); (err != nil) != tt.wantErr {
 			t.Errorf("checkTransDir() error = %v, wantErr %v", err, tt.wantErr)
 		}
 	}
 	err := os.Remove(filepath.Join(wd, "Translation", "Dir1"))
 	if err != nil {
 		t.Errorf("Error = %v", err)
-	}
-}
-
-func Test_populateTranslationName(t *testing.T) {
-	populateTranslationName("Spanish")
-	if translationName != "Spanish" {
-		t.Errorf("populateTranslationName() error => wanted `Spanish and got` %v", translationName)
 	}
 }

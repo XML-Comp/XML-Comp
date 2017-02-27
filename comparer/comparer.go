@@ -13,26 +13,26 @@ import (
 var (
 	// DocType is required If you want to use the package, so don't
 	// forget to instantiate It before using the Compare function
-	DocType         string
-	translationName string
+	DocType string
 	// Docs , Lines and InNeed are `metrics` of how the program is running
 	Docs   int
 	Lines  int
 	InNeed int
 )
 
-func Compare(original, translation string, b bool) error {
-	if b {
-		populateTranslationName(translation)
-	}
+// Compare is the function that takes two paths to comparable
+// files and directories and builds It's differences into new
+// files or new lines in the translated file
+// getTranslationName determines If you
+func Compare(original, translation string) error {
 	originalDir, err := readDir(original)
 	if err != nil {
 		return err
 	}
 	for _, f := range originalDir {
 		if f.IsDir() {
-			checkTransDirExists(f.Name())
-			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()), false)
+			checkTransDirExists(f.Name(), translation)
+			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
 		} else {
 			Docs += 2
 			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
@@ -166,12 +166,13 @@ func findMissing(fileFolderA, fileFolderB []string) []string {
 	return fileFolderA
 }
 
-func checkTransDirExists(dir string) error {
-	dir = strings.Replace(dir, "English", translationName, 1)
+func checkTransDirExists(dir, translation string) error {
+	splitDir := strings.Split(dir, "/")
+	dir = filepath.Join(translation, splitDir[len(splitDir)-1])
 	_, err := os.Open(dir)
 	if err != nil {
 		splitedDirectory := strings.Split(dir, "/")
-		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])]
+		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])-1]
 		os.Chdir(parentDirFromSplit)
 		errMkdir := os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
 		if err != nil {
@@ -179,16 +180,4 @@ func checkTransDirExists(dir string) error {
 		}
 	}
 	return nil
-}
-
-func populateTranslationName(t string) {
-	var splitTransPath []string
-	slash := strings.Contains("/", t)
-	if slash {
-		splitTransPath = strings.Split(t, "/")
-	} else {
-		splitTransPath = strings.Split(t, "\\")
-	}
-	translationName = splitTransPath[len(splitTransPath)-1]
-	return
 }

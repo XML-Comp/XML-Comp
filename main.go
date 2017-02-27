@@ -33,7 +33,7 @@ func main() {
 	fmt.Println("Creating instance ...")
 	fmt.Print("Output:- ")
 	comparer.DocType = *docType
-	err := comparer.Compare(*original, *translation, true)
+	err := comparer.Compare(*original, *translation)
 	if err != nil {
 		panic(err)
 	}
