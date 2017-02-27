@@ -1,6 +1,6 @@
 [![LICENSE](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/XML-Comp/XML-Comp)](https://goreportcard.com/report/github.com/XML-Comp/XML-Comp)
-[![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-XML-Comp-XML-Comp)
+[![codebeat badge](https://codebeat.co/badges/1600adbb-27a3-4c3b-803e-818e1834b51a)](https://codebeat.co/projects/github-com-xml-comp-xml-comp)
 [![GoDoc](https://godoc.org/github.com/XML-Comp/XML-Comp?status.png)](https://godoc.org/github.com/XML-Comp/XML-Comp)
 [![Top Level Coverage](https://coveralls.io/repos/github/XML-Comp/XML-Comp/badge.svg?branch=master)](https://coveralls.io/github/XML-Comp/XML-Comp?branch=master)
 [![Travis Build Status](https://api.travis-ci.org/XML-Comp/XML-Comp.svg?branch=master)](https://travis-ci.org/XML-Comp/XML-Comp)
