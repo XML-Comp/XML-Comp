@@ -39,4 +39,5 @@ func main() {
 	}
 	fmt.Println("Docs comparisons are DONE!")
 	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", comparer.Docs, comparer.Lines, comparer.InNeed)
+	os.Exit(0)
 }

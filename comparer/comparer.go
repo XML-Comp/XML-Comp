@@ -138,9 +138,11 @@ func readFile(file, path string) ([]string, error) {
 			continue
 		}
 		tag := line[indexStart : indexEnd+1]
+		markers := strings.Split(tag, " ")
 		if string(tag[0]) == "/" {
 			continue
 		}
+		tag = markers[0]
 		if (indexStart != -1) && (indexEnd != -1) {
 			tags = append(tags, tag)
 		}
