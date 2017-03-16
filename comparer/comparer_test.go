@@ -54,7 +54,7 @@ func Test_readFile(t *testing.T) {
 				file: "File01.xml",
 				path: filepath.Join(wd, "testPaths", "Original"),
 			},
-			want:    []string{"<linha 1>", "<linha 2>", "<linha 3>"},
+			want:    []string{"<linha1>", "<linha2>", "<linha3>"},
 			wantErr: false,
 		},
 	}
