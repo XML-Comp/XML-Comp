@@ -50,3 +50,19 @@ $ xml-comp help
 ```
 #### [Join our Gitter](https://gitter.im/XML-Comparer/Lobby)
 #### To Do - Check our [Issues](https://github.com/XML-Comp/XML-Comp/issues) & [Milestones]()
+
+## Using only the comparer package
+1- Import the package
+```go
+import "github.com/XML-Comp/XML-Comp/comparer"
+```
+2- Set document type variable to the desired document
+```go
+// without the "." | eg: "xml" or "html"
+comparer.DocType = "desired docType"
+```
+3- Start the main function with the full paths to compare
+```go
+// the firstPath is always what will be used as model
+comparer.Compare(firstPath, comparingPath)
+```
