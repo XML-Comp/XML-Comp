@@ -6,6 +6,7 @@
 [![Travis Build Status](https://api.travis-ci.org/XML-Comp/XML-Comp.svg?branch=master)](https://travis-ci.org/XML-Comp/XML-Comp)
 [![DOI](https://zenodo.org/badge/71943139.svg)](https://zenodo.org/badge/latestdoi/71943139)
 
+<!-- slice branch -->
 ## XML-Comparer
 This package is a command line tool that provides the capability of comparing two directories and outputs files with differences between them, including: missing Files, missing Folders and missing Tags of .xml files. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
 
