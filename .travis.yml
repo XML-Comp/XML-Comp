@@ -5,14 +5,14 @@ go:
 before_install:
   - go get -t -v ./...
 
-script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
-
 install:
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
 
 script:
+  - cd comparer
+  - go test -v ./...
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
   - go test -v -covermode=count -coverprofile=coverage.out
   - $HOME/gopath/bin/goveralls -service=travis-ci
 
