@@ -31,14 +31,20 @@ func Compare(original, translation string) error {
 	}
 	for _, f := range originalDir {
 		if f.IsDir() {
-			checkTransDirExists(f.Name(), translation)
-			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			errDirExists := checkTransDirExists(f.Name(), translation)
+			if errDirExists != nil {
+				return errDirExists
+			}
+			errCompare := Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if errCompare != nil {
+				return errCompare
+			}
 		} else {
 			Docs += 2
-			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
-		}
-		if err != nil {
-			return err
+			errRead := readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if errRead != nil {
+				return errRead
+			}
 		}
 	}
 	return nil
