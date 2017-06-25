@@ -36,7 +36,7 @@ func TestCompareFolder(t *testing.T) {
 	}
 }
 
-func Test_readFile(t *testing.T) {
+func TestReadFile(t *testing.T) {
 	DocType = "xml"
 	type args struct {
 		file string
@@ -45,7 +45,7 @@ func Test_readFile(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []string
+		want    map[string]string
 		wantErr bool
 	}{
 		{
@@ -54,7 +54,7 @@ func Test_readFile(t *testing.T) {
 				file: "File01.xml",
 				path: filepath.Join(wd, "testPaths", "Original"),
 			},
-			want:    []string{"<linha1>", "<linha2>", "<linha3>"},
+			want:    map[string]string{"<linha1>": "TEste", "<linha2>": "teste", "<linha3>": "teste"},
 			wantErr: false,
 		},
 	}
@@ -72,35 +72,35 @@ func Test_readFile(t *testing.T) {
 	}
 }
 
-func Test_findMissing(t *testing.T) {
+func TestFindMissing(t *testing.T) {
 	type args struct {
-		fileFolderA []string
-		fileFolderB []string
+		original    map[string]string
+		translation map[string]string
 	}
 	tests := []struct {
 		name string
 		args args
-		want []string
+		want map[string]string
 	}{
 		{
 			name: "find missing Tags",
 			args: args{
-				fileFolderA: []string{"<linha 1>", "<linha 2>", "<linha 3>"},
-				fileFolderB: []string{"<linha 1>", "<linha 2>"},
+				original:    map[string]string{"<linha 1>": "", "<linha 2>": "", "<linha 3>": "teste"},
+				translation: map[string]string{"<linha 1>": "", "<linha 2>": ""},
 			},
-			want: []string{"<linha 3>"},
+			want: map[string]string{"<linha 3>": "teste"},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := findMissing(tt.args.fileFolderA, tt.args.fileFolderB); !reflect.DeepEqual(got, tt.want) {
+			if got := findMissing(tt.args.original, tt.args.translation); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("findMissing() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_readFiles(t *testing.T) {
+func TestReadFiles(t *testing.T) {
 	tests := []struct {
 		name    string
 		orgF    string
@@ -127,7 +127,7 @@ func Test_readFiles(t *testing.T) {
 	}
 }
 
-func Test_checkTransDir(t *testing.T) {
+func TestCheckTransDir(t *testing.T) {
 	os.Chdir("..")
 	wd, _ := os.Getwd()
 	tests := []struct {

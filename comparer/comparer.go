@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"sort"
 	"strings"
 )
 
@@ -31,14 +30,20 @@ func Compare(original, translation string) error {
 	}
 	for _, f := range originalDir {
 		if f.IsDir() {
-			checkTransDirExists(f.Name(), translation)
-			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			errDirExists := checkTransDirExists(f.Name(), translation)
+			if errDirExists != nil {
+				return errDirExists
+			}
+			errCompare := Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if errCompare != nil {
+				return errCompare
+			}
 		} else {
 			Docs += 2
-			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
-		}
-		if err != nil {
-			return err
+			errRead := readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if errRead != nil {
+				return errRead
+			}
 		}
 	}
 	return nil
@@ -99,25 +104,25 @@ func readFiles(orgF, trltF string) error {
 		return err
 	}
 	defer f.Close()
-	for _, t := range missingTags {
-		if string(t[1]) == "/" {
+	for k, v := range missingTags {
+		if string(k[1]) == "/" {
 			continue
 		}
 		InNeed++
-		if (strings.Compare(string(t[:3]), "<!-") == 0) || (strings.Compare(string(t[:3]), "<--") == 0) || (strings.Compare(string(t[:5]), "<?xml") == 0) {
-			if _, err = f.WriteString(fmt.Sprintf("\n%s", t)); err != nil {
+		if (strings.Compare(string(k[:3]), "<!-") == 0) || (strings.Compare(string(k[:3]), "<--") == 0) || (strings.Compare(string(k[:5]), "<?xml") == 0) {
+			if _, err = f.WriteString(fmt.Sprintf("\n%s", k)); err != nil {
 				return err
 			}
 			continue
 		}
-		if _, err = f.WriteString(fmt.Sprintf("\n%sAdd your translation here%s/%s", t, t[:1], t[1:])); err != nil {
+		if _, err = f.WriteString(fmt.Sprintf("\n%s%s%s/%s", k, k[:1], v, k[1:])); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func readFile(file, path string) ([]string, error) {
+func readFile(file, path string) (map[string]string, error) {
 	splittedFileName := strings.Split(file, ".")
 	if splittedFileName[len(splittedFileName)-1] != DocType {
 		return nil, nil
@@ -127,7 +132,7 @@ func readFile(file, path string) ([]string, error) {
 		return nil, err
 	}
 	defer inFile.Close()
-	tags := []string{}
+	tags := map[string]string{}
 	scanner := bufio.NewScanner(inFile)
 	for scanner.Scan() {
 		Lines++
@@ -143,29 +148,26 @@ func readFile(file, path string) ([]string, error) {
 			continue
 		}
 		tag = markers[0]
+		valEnd := strings.LastIndex(line, "<")
+		translationValue := line[indexEnd+1 : valEnd]
 		if (indexStart != -1) && (indexEnd != -1) {
-			tags = append(tags, tag)
+			tags[tag] = translationValue
 		}
 	}
 	return tags, nil
 }
 
-// More info: https://gist.github.com/ArxdSilva/7392013cbba7a7090cbcd120b7f5ca31
-func findMissing(fileFolderA, fileFolderB []string) []string {
-	sort.Strings(fileFolderA)
-	sort.Strings(fileFolderB)
-	if reflect.DeepEqual(fileFolderA, fileFolderB) {
+func findMissing(original, translation map[string]string) map[string]string {
+	missing := make(map[string]string)
+	if reflect.DeepEqual(original, translation) {
 		return nil
 	}
-	for i := len(fileFolderA) - 1; i >= 0; i-- {
-		for _, vD := range fileFolderB {
-			if fileFolderA[i] == vD {
-				fileFolderA = append(fileFolderA[:i], fileFolderA[i+1:]...)
-				break
-			}
+	for k, v := range original {
+		if _, ok := translation[k]; !ok {
+			missing[k] = v
 		}
 	}
-	return fileFolderA
+	return missing
 }
 
 func checkTransDirExists(dir, translation string) error {
