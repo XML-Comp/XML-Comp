@@ -149,6 +149,10 @@ func readFile(file, path string) (map[string]string, error) {
 		}
 		tag = markers[0]
 		valEnd := strings.LastIndex(line, "<")
+		if valEnd < indexEnd {
+			continue
+		}
+		fmt.Println(indexEnd, valEnd, len(line))
 		translationValue := line[indexEnd+1 : valEnd]
 		if (indexStart != -1) && (indexEnd != -1) {
 			tags[tag] = translationValue

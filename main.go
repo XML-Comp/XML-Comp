@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/XML-Comp/XML-Comp/comparer"
@@ -19,6 +20,7 @@ func main() {
 	)
 	flag.Parse()
 	args := os.Args
+	// fmt.Println(len(args))
 	switch {
 	case len(args) < 2 || args[1] == "-h":
 		flag.Usage()
@@ -35,7 +37,7 @@ func main() {
 	comparer.DocType = *docType
 	err := comparer.Compare(*original, *translation)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	fmt.Println("Docs comparisons are DONE!")
 	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", comparer.Docs, comparer.Lines, comparer.InNeed)
