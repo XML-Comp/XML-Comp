@@ -9,7 +9,7 @@ import (
 	"github.com/XML-Comp/XML-Comp/comparer"
 )
 
-const ver = "v0.24"
+const ver = "v0.32"
 
 func main() {
 	var (
@@ -20,7 +20,6 @@ func main() {
 	)
 	flag.Parse()
 	args := os.Args
-	// fmt.Println(len(args))
 	switch {
 	case len(args) < 2 || args[1] == "-h":
 		flag.Usage()
