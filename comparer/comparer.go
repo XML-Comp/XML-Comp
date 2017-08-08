@@ -90,10 +90,6 @@ func readFiles(orgF, trltF string) error {
 		if errCreate != nil {
 			return errCreate
 		}
-		return nil
-	}
-	if trltTags == nil {
-		return nil
 	}
 	missingTags := findMissing(orgTags, trltTags)
 	if missingTags == nil {
