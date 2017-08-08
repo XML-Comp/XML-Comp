@@ -109,17 +109,21 @@ func readFiles(orgF, trltF string) error {
 			continue
 		}
 		InNeed++
-		if (strings.Compare(string(k[:3]), "<!-") == 0) || (strings.Compare(string(k[:3]), "<--") == 0) || (strings.Compare(string(k[:5]), "<?xml") == 0) {
+		if (isFormatFile(k, "<!-")) || (isFormatFile(k, "<--")) || isFormatFile(k, "<?"+DocType) {
 			if _, err = f.WriteString(fmt.Sprintf("\n%s", k)); err != nil {
 				return err
 			}
 			continue
 		}
-		if _, err = f.WriteString(fmt.Sprintf("\n%s%s%s/%s", k, k[:1], v, k[1:])); err != nil {
+		if _, err = f.WriteString(fmt.Sprintf("\n%s%s%s/%s", k, v, k[:1], k[1:])); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func isFormatFile(str, s string) bool {
+	return strings.Contains(s, str)
 }
 
 func readFile(file, path string) (map[string]string, error) {
@@ -152,7 +156,7 @@ func readFile(file, path string) (map[string]string, error) {
 		if valEnd < indexEnd {
 			continue
 		}
-		fmt.Println(indexEnd, valEnd, len(line))
+		// fmt.Println(indexEnd, valEnd, len(line))
 		translationValue := line[indexEnd+1 : valEnd]
 		if (indexStart != -1) && (indexEnd != -1) {
 			tags[tag] = translationValue
