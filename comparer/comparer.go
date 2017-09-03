@@ -24,7 +24,7 @@ var (
 // files or new lines in the translated file
 // getTranslationName determines If you
 func Compare(original, translation string) error {
-	originalDir, err := readDir(original)
+	originalDir, err := ReadDir(original)
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func Compare(original, translation string) error {
 	return nil
 }
 
-func readDir(path string) ([]os.FileInfo, error) {
+func ReadDir(path string) ([]os.FileInfo, error) {
 	err := os.Chdir(path)
 	if err != nil {
 		return nil, err

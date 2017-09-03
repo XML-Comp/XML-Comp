@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/XML-Comp/XML-Comp/comparer"
 )
@@ -16,6 +17,8 @@ func main() {
 		original    = flag.String("original", "", "Full path directory of your RimWorld English folder (required)")
 		translation = flag.String("translation", "", "Full path directory of your RimWorld Translation folder (required)")
 		docType     = flag.String("doc", "xml", "Type of the Doc that you want to compare (not required)")
+		multipleMsg = "Considers the translation flag as a collection of translations, enabling 1:N comparison"
+		multiple    = flag.Bool("multiple", false, multipleMsg)
 		version     = flag.Bool("version", false, "Prints current version")
 	)
 	flag.Parse()
@@ -34,11 +37,33 @@ func main() {
 	fmt.Println("Creating instance ...")
 	fmt.Print("Output:- ")
 	comparer.DocType = *docType
-	err := comparer.Compare(*original, *translation)
-	if err != nil {
-		log.Fatal(err)
+	var docs, lines, inNeed int
+	if *multiple {
+		dir, err := comparer.ReadDir(*translation)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, d := range dir {
+			if d.IsDir() {
+				err := comparer.Compare(*original, filepath.Join(*translation, d.Name()))
+				if err != nil {
+					log.Fatal(err)
+				}
+			}
+			docs += comparer.Docs
+			lines += comparer.Lines
+			inNeed += comparer.InNeed
+		}
+	} else {
+		err := comparer.Compare(*original, *translation)
+		if err != nil {
+			log.Fatal(err)
+		}
+		docs = comparer.Docs
+		lines = comparer.Lines
+		inNeed = comparer.InNeed
 	}
 	fmt.Println("Docs comparisons are DONE!")
-	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", comparer.Docs, comparer.Lines, comparer.InNeed)
+	fmt.Printf("Documents scanned: %v | Lines scanned: %v | Translations needed: %v\n", docs, lines, inNeed)
 	os.Exit(0)
 }
