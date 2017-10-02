@@ -7,7 +7,7 @@
 [![DOI](https://zenodo.org/badge/71943139.svg)](https://zenodo.org/badge/latestdoi/71943139)
 
 ## XML-Comparer
-This package is a command line tool that provides the capability of comparing two directories and outputs files with differences between them, including: missing Files, missing Folders and missing Tags of .xml files. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
+This package is a command line tool that provides the capability of comparing two directories adding to files the differences between them, creating the possible files or folders that are missing and adding the missing tags on each file. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
 
 (1) and maybe other indie games that uses XML
 
