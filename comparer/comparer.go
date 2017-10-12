@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+const (
+	pathSep = string(os.PathSeparator)
+)
+
 var (
 	// DocType is required If you want to use the package, so don't
 	// forget to instantiate It before using the Compare function
@@ -71,13 +75,13 @@ func readFiles(orgF, trltF string) error {
 	if err != nil {
 		return err
 	}
-	fName := strings.Split(orgF, "/")
+	fName := strings.Split(orgF, pathSep)
 	fileName := fName[len(fName)-1]
 	orgTags, err := readFile(fileName, filepath.Dir(orgF))
 	if err != nil {
 		return err
 	}
-	fName = strings.Split(trltF, "/")
+	fName = strings.Split(trltF, pathSep)
 	fileName = fName[len(fName)-1]
 	trltTags, err := readFile(fileName, filepath.Dir(trltF))
 	if err != nil {
@@ -101,7 +105,7 @@ func readFiles(orgF, trltF string) error {
 	}
 	defer f.Close()
 	for k, v := range missingTags {
-		if string(k[1]) == "/" {
+		if string(k[1]) ==pathSep {
 			continue
 		}
 		InNeed++
@@ -142,9 +146,9 @@ func readFile(file, path string) (map[string]string, error) {
 		if (len(line) == 0) || indexStart < 0 || indexEnd < 0 {
 			continue
 		}
-		tag := line[indexStart : indexEnd+1]
+		tag := line[indexStart: indexEnd+1]
 		markers := strings.Split(tag, " ")
-		if string(tag[0]) == "/" {
+		if string(tag[0]) == pathSep {
 			continue
 		}
 		tag = markers[0]
@@ -152,7 +156,7 @@ func readFile(file, path string) (map[string]string, error) {
 		if valEnd < indexEnd {
 			continue
 		}
-		translationValue := line[indexEnd+1 : valEnd]
+		translationValue := line[indexEnd+1: valEnd]
 		if (indexStart != -1) && (indexEnd != -1) {
 			tags[tag] = translationValue
 		}
@@ -174,13 +178,15 @@ func findMissing(original, translation map[string]string) map[string]string {
 }
 
 func checkTransDirExists(dir, translation string) error {
-	splitDir := strings.Split(dir, "/")
+	splitDir := strings.Split(dir, pathSep)
 	dir = filepath.Join(translation, splitDir[len(splitDir)-1])
 	_, err := os.Open(dir)
 	if err != nil {
-		splitedDirectory := strings.Split(dir, "/")
+		splitedDirectory := strings.Split(dir, pathSep)
 		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])-1]
 		os.Chdir(parentDirFromSplit)
+		fmt.Println(parentDirFromSplit)
+		fmt.Println(splitedDirectory[len(splitedDirectory)-1])
 		errMkdir := os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
 		if err != nil {
 			return errMkdir

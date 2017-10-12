@@ -6,11 +6,17 @@ import (
 	"path/filepath"
 	"reflect"
 	"testing"
+	"runtime"
 )
 
 var wd, _ = os.Getwd()
 
+
 func TestCompareFolder(t *testing.T) {
+	fileMissing := "no such file or directory"
+	if runtime.GOOS == "windows" {
+		fileMissing = "The system cannot find the file specified."
+	}
 	tests := []struct {
 		name     string
 		PathA    string
@@ -21,7 +27,7 @@ func TestCompareFolder(t *testing.T) {
 			name:     "no dir",
 			PathA:    "fakeDir1",
 			PathB:    "fakeDir2",
-			Expected: fmt.Errorf("chdir fakeDir1: no such file or directory"),
+			Expected: fmt.Errorf("chdir fakeDir1: %s", fileMissing),
 		},
 	}
 	for _, test := range tests {
