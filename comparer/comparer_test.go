@@ -5,12 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"testing"
 	"runtime"
+	"testing"
 )
 
 var wd, _ = os.Getwd()
-
 
 func TestCompareFolder(t *testing.T) {
 	fileMissing := "no such file or directory"
