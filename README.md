@@ -29,15 +29,15 @@ $ go get github.com/XML-Comp/XML-Comp
 
 ### Running
 ```shell
-$ XML-Comp -original /path/to/language/english -translation /path/to/language/translation
+$ XML-Comp -translation /path/to/language/translation
 ```
 
 ### How this works?
-You need two paths that we call "original" & "translation", which are described bellow:
-- **`"original"`**: Full path directory of your RimWorld English folder
-- **`"translation"`**: Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon)
+You need two paths that we call "original" (optional) & "translation", which are described bellow:
+- **`"original"`**: Full path directory of your RimWorld English folder (optional).
+- **`"translation"`**: Full path directory of your RimWorld ~Language~ folder cloned from [GitHub](https://github.com/ludeon).
 
-My "original" path: **`/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English`**
+My "original" path (optional): **`/Users/arthur/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Mods/Core/Languages/English`**
 
 My "translation" path: **`/Users/arthur/Github/RimWorld-PortugueseBrazilian`**
 
