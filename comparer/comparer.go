@@ -185,8 +185,6 @@ func checkTransDirExists(dir, translation string) error {
 		splitedDirectory := strings.Split(dir, pathSep)
 		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])-1]
 		os.Chdir(parentDirFromSplit)
-		fmt.Println(parentDirFromSplit)
-		fmt.Println(splitedDirectory[len(splitedDirectory)-1])
 		errMkdir := os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
 		if err != nil {
 			return errMkdir
