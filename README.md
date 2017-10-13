@@ -6,6 +6,17 @@
 [![Travis Build Status](https://api.travis-ci.org/XML-Comp/XML-Comp.svg?branch=master)](https://travis-ci.org/XML-Comp/XML-Comp)
 [![DOI](https://zenodo.org/badge/71943139.svg)](https://zenodo.org/badge/latestdoi/71943139)
 
+## Menu
+* [XML-Comparer](https://github.com/xml-comp/xml-comp#xml-comparer)
+* [Installing](https://github.com/xml-comp/xml-comp#installing)
+* [Running](https://github.com/xml-comp/xml-comp#running)
+* [How this works?](https://github.com/xml-comp/xml-comp#how-this-works)
+* [Comparing any kind of document](https://github.com/xml-comp/xml-comp#)
+* [XML-Comp CLI Usage](https://github.com/xml-comp/xml-comp#xml-comp-cli-usage-needed-go-17)
+* [Contributing](https://github.com/xml-comp/xml-comp#contributing)
+* [To Do](https://github.com/xml-comp/xml-comp#to-do---check-our-issues--milestones)
+* [Using only the comparer package](https://github.com/xml-comp/xml-comp#using-only-the-comparer-package)
+
 ## XML-Comparer
 This package is a command line tool that provides the capability of comparing two directories adding to files the differences between them, creating the possible files or folders that are missing and adding the missing tags on each file. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
 
@@ -30,7 +41,7 @@ My "original" path: **`/Users/arthur/Library/Application Support/Steam/steamapps
 
 My "translation" path: **`/Users/arthur/Github/RimWorld-PortugueseBrazilian`**
 
-With these paths in hand you run our program and It will let you know in a `missingSomethieng.txt` file what is missing and where in your translation! That simple!
+With these paths in hand, running them with `xml-comp` program will let you know in every file of your project what is missing by adding lines to it with what is needed to translate! That simple!
 
 #### Comparing any kind of document:
 To compare any kind of files, all you need is to use the flag `-doc <type name>`, eg `-doc html`. This will use the paths that you gave only to compare the specified type of document. Another example:
@@ -48,6 +59,8 @@ $ cd xml-comp
 $ go install
 $ xml-comp help
 ```
+#### [Contributing](https://github.com/XML-Comp/XML-Comp/blob/master/Contributing.md)
+
 #### [Join our Gitter](https://gitter.im/XML-Comparer/Lobby)
 #### To Do - Check our [Issues](https://github.com/XML-Comp/XML-Comp/issues) & [Milestones]()
 
