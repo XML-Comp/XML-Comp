@@ -74,7 +74,6 @@ func main() {
 // Returns empty string if directory is not found.
 func getOriginalDir() string {
 	rimWorldDir := ""
-
 	// https://support.steampowered.com/kb_article.php?ref=7710-tdlc-0426
 	if runtime.GOOS == "windows" && runtime.GOARCH == "386" {
 		rimWorldDir = `C:\Program Files\Steam\steamapps\common\RimWorld`
@@ -86,20 +85,16 @@ func getOriginalDir() string {
 		if err != nil {
 			return ""
 		}
-
 		// safe to use *nix path sep since we are in the darwin runtime
 		rimWorldDir = filepath.Join(currentUser.HomeDir,
 			`/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app`)
 	}
-
 	// we're in all runtimes here, use os dependent separator
 	englishTrans := filepath.Join(rimWorldDir, "Mods", "Core", "Languages", "English")
-
 	// do one final check to make sure the English dir exists
 	_, err := os.Stat(englishTrans)
 	if err != nil {
 		englishTrans = ""
 	}
-
 	return englishTrans
 }
