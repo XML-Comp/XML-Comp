@@ -7,6 +7,7 @@
 [![DOI](https://zenodo.org/badge/71943139.svg)](https://zenodo.org/badge/latestdoi/71943139)
 
 ## Menu
+* [GoDoc](https://godoc.org/github.com/XML-Comp/XML-Comp/comparer)
 * [XML-Comparer](https://github.com/xml-comp/xml-comp#xml-comparer)
 * [Installing](https://github.com/xml-comp/xml-comp#installing)
 * [Running](https://github.com/xml-comp/xml-comp#running)
