@@ -23,10 +23,9 @@ var (
 	InNeed int
 )
 
-// Compare is the function that takes two paths to comparable
-// files and directories and builds It's differences into new
-// files or new lines in the translated file
-// getTranslationName determines If you
+// Compare is the function that takes two comparable paths to 
+// directories and writes It's differences into the translation's
+// directories files
 func Compare(original, translation string) error {
 	originalDir, err := ReadDir(original)
 	if err != nil {
