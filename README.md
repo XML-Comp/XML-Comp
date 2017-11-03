@@ -5,6 +5,8 @@
 [![Top Level Coverage](https://coveralls.io/repos/github/XML-Comp/XML-Comp/badge.svg?branch=master)](https://coveralls.io/github/XML-Comp/XML-Comp?branch=master)
 [![Travis Build Status](https://api.travis-ci.org/XML-Comp/XML-Comp.svg?branch=master)](https://travis-ci.org/XML-Comp/XML-Comp)
 [![DOI](https://zenodo.org/badge/71943139.svg)](https://zenodo.org/badge/latestdoi/71943139)
+[![Donate](https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=arxdsilva%40gmail%2ecom&lc=BR&item_name=xml%2dcomp&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+
 
 ## Menu
 * [GoDoc](https://godoc.org/github.com/XML-Comp/XML-Comp/comparer)
