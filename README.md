@@ -13,15 +13,15 @@
 
 
 ## Menu
-* [What is XML-Comp?](https://github.com/xml-comp/xml-comp#what-is-XML-Comp)
-* [Features](https://github.com/xml-comp/xml-comp#features)
-* [Installing](https://github.com/xml-comp/xml-comp#installing)
-* [Running](https://github.com/xml-comp/xml-comp#running)
-* [How this works?](https://github.com/xml-comp/xml-comp#how-this-works)
-* [Comparing any kind of document](https://github.com/xml-comp/xml-comp#comparing-any-kind-of-document)
-* [Contributing](https://github.com/xml-comp/xml-comp#contributing)
-* [To Do](https://github.com/xml-comp/xml-comp#to-do---check-our-issues--milestones)
-* [Using only the comparer package](https://github.com/xml-comp/xml-comp#using-only-the-comparer-package)
+1. [What is XML-Comp?](https://github.com/xml-comp/xml-comp#what-is-XML-Comp)
+2. [Features](https://github.com/xml-comp/xml-comp#features)
+3. [Installing](https://github.com/xml-comp/xml-comp#installing)
+4. [Running](https://github.com/xml-comp/xml-comp#running)
+5. [How this works?](https://github.com/xml-comp/xml-comp#how-this-works)
+6. [Comparing any kind of document](https://github.com/xml-comp/xml-comp#comparing-any-kind-of-document)
+7. [Contributing](https://github.com/xml-comp/xml-comp#contributing)
+8. [To Do](https://github.com/xml-comp/xml-comp#to-do---check-our-issues--milestones)
+9. [Using only the comparer package](https://github.com/xml-comp/xml-comp#using-only-the-comparer-package)
 
 ## What is XML-Comp
 This is a command line tool and a package that together they provide the capability of comparing two directories and appending to files the differences between the directories, also creates possible files or folders that are missing. It was made to help [RimWorld](http://rimworldgame.com/)'s [community translators](https://github.com/ludeon)(1) to know what was modified on the last XML updates and to let them keep in track of what they need to add/remove from what has been done.
