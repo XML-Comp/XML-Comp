@@ -23,33 +23,33 @@ var (
 	InNeed int
 )
 
-// Compare is the function that takes two comparable paths to 
+// Compare is the function that takes two comparable paths to
 // directories and writes It's differences into the translation's
 // directories files
-func Compare(original, translation string) error {
+func Compare(original, translation string) (err error) {
 	originalDir, err := ReadDir(original)
 	if err != nil {
-		return err
+		return
 	}
 	for _, f := range originalDir {
 		if f.IsDir() {
-			errDirExists := checkTransDirExists(f.Name(), translation)
-			if errDirExists != nil {
-				return errDirExists
+			err = checkTransDirExists(f.Name(), translation)
+			if err != nil {
+				return
 			}
-			errCompare := Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
-			if errCompare != nil {
-				return errCompare
+			err = Compare(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if err != nil {
+				return
 			}
 		} else {
 			Docs += 2
-			errRead := readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
-			if errRead != nil {
-				return errRead
+			err = readFiles(filepath.Join(original, f.Name()), filepath.Join(translation, f.Name()))
+			if err != nil {
+				return
 			}
 		}
 	}
-	return nil
+	return
 }
 
 func ReadDir(path string) ([]os.FileInfo, error) {
@@ -69,16 +69,16 @@ func ReadDir(path string) ([]os.FileInfo, error) {
 	return file, nil
 }
 
-func readFiles(orgF, trltF string) error {
-	err := os.Chdir(filepath.Dir(orgF))
+func readFiles(orgF, trltF string) (err error) {
+	err = os.Chdir(filepath.Dir(orgF))
 	if err != nil {
-		return err
+		return
 	}
 	fName := strings.Split(orgF, pathSep)
 	fileName := fName[len(fName)-1]
 	orgTags, err := readFile(fileName, filepath.Dir(orgF))
 	if err != nil {
-		return err
+		return
 	}
 	fName = strings.Split(trltF, pathSep)
 	fileName = fName[len(fName)-1]
@@ -86,39 +86,61 @@ func readFiles(orgF, trltF string) error {
 	if err != nil {
 		err = os.Chdir(filepath.Dir(trltF))
 		if err != nil {
-			return err
+			return
 		}
 		file, errCreate := os.Create(fileName)
-		defer file.Close()
 		if errCreate != nil {
 			return errCreate
 		}
+		defer file.Close()
 	}
 	missingTags := findMissing(orgTags, trltTags)
 	if missingTags == nil {
-		return nil
+		return
 	}
+	outdatedTags := findMissing(trltTags, orgTags)
+	err = writeToFileMissingTags(trltF, outdatedTags, true)
+	if err != nil {
+		return
+	}
+	err = writeToFileMissingTags(trltF, missingTags, false)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func writeToFileMissingTags(trltF string, missingTags map[string]string, outdated bool) (err error) {
 	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
-		return err
+		return
 	}
 	defer f.Close()
-	for k, v := range missingTags {
-		if string(k[1]) ==pathSep {
+	for missingKey, missingValue := range missingTags {
+		if string(missingKey[1]) == pathSep {
 			continue
 		}
 		InNeed++
-		if (isFormatFile(k, "<!-")) || (isFormatFile(k, "<--")) || isFormatFile(k, "<?"+DocType) {
-			if _, err = f.WriteString(fmt.Sprintf("\n%s", k)); err != nil {
-				return err
+		if (isFormatFile(missingKey, "<!-")) || (isFormatFile(missingKey, "<--")) || isFormatFile(missingKey, "<?"+DocType) {
+			_, err = f.WriteString(fmt.Sprintf("\n%s", missingKey))
+			if err != nil {
+				return
 			}
 			continue
 		}
-		if _, err = f.WriteString(fmt.Sprintf("\n%s%s%s/%s", k, v, k[:1], k[1:])); err != nil {
-			return err
+		if outdated {
+			_, err = f.WriteString(fmt.Sprintf("\n[OUTDATED]%s", missingKey))
+			if err != nil {
+				return
+			}
+			continue
+		}
+		_, err = f.WriteString(fmt.Sprintf("\n%s%s</%s", missingKey, missingValue, missingKey[1:]))
+		if err != nil {
+			return
 		}
 	}
-	return nil
+	return
 }
 
 func isFormatFile(str, s string) bool {
@@ -145,7 +167,7 @@ func readFile(file, path string) (map[string]string, error) {
 		if (len(line) == 0) || indexStart < 0 || indexEnd < 0 {
 			continue
 		}
-		tag := line[indexStart: indexEnd+1]
+		tag := line[indexStart : indexEnd+1]
 		markers := strings.Split(tag, " ")
 		if string(tag[0]) == pathSep {
 			continue
@@ -155,7 +177,7 @@ func readFile(file, path string) (map[string]string, error) {
 		if valEnd < indexEnd {
 			continue
 		}
-		translationValue := line[indexEnd+1: valEnd]
+		translationValue := line[indexEnd+1 : valEnd]
 		if (indexStart != -1) && (indexEnd != -1) {
 			tags[tag] = translationValue
 		}

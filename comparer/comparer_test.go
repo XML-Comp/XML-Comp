@@ -1,11 +1,14 @@
 package comparer
 
 import (
+	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -114,8 +117,8 @@ func TestReadFiles(t *testing.T) {
 	}{
 		{
 			name:    "testing equal files",
-			orgF:    "testPaths/Original/File01.xml",
-			trltF:   "testPaths/Translation/File01.xml",
+			orgF:    filepath.Join("testPaths", "Original", "File01.xml"),
+			trltF:   filepath.Join("testPaths", "Translation", "File01.xml"),
 			wantErr: false,
 		},
 	}
@@ -126,9 +129,47 @@ func TestReadFiles(t *testing.T) {
 			}
 		})
 	}
-	err := readFiles(filepath.Join(wd, "testPaths/Original/File01.xml"), filepath.Join(wd, "testPaths/Translation/File03.xml"))
+}
+
+func TestReadFilesWithOutdatedTags(t *testing.T) {
+	tests := []struct {
+		name    string
+		orgF    string
+		trltF   string
+		wantErr bool
+	}{
+		{
+			name:    "testing equal files",
+			orgF:    filepath.Join("testPaths", "Original", "File03.xml"),
+			trltF:   filepath.Join("testPaths", "Translation", "File03.xml"),
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := readFiles(filepath.Join(wd, tt.orgF), filepath.Join(wd, tt.trltF)); (err != nil) != tt.wantErr {
+				t.Errorf("readFiles() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+	f, err := os.Open(filepath.Join(wd, tests[0].trltF))
 	if err != nil {
-		t.Errorf("readFiles() error = %v, wantErr %v", err, nil)
+		t.Error(err)
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	var outdated bool
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "OUTDATED") {
+			outdated = true
+		}
+	}
+	if !outdated {
+		t.Error("File File03.xml should have a outdated tag")
+	}
+	err = ioutil.WriteFile(filepath.Join(wd, "testPaths", "Translation", "File03.xml"), []byte("<linha4></linha4>"), 0644)
+	if err != nil {
+		t.Error(err)
 	}
 }
 
