@@ -65,6 +65,14 @@ func TestReadFile(t *testing.T) {
 			want:    map[string]string{"<linha1>": "TEste", "<linha2>": "teste", "<linha3>": "teste"},
 			wantErr: false,
 		},
+		{
+			name: "cant read invalid file",
+			args: args{
+				file: "inexistant.xml",
+				path: filepath.Join(wd, "testPaths", "Original"),
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
