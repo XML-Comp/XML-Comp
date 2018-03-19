@@ -129,11 +129,16 @@ func TestReadFiles(t *testing.T) {
 			trltF:   filepath.Join("testPaths", "Translation", "File01.xml"),
 			wantErr: false,
 		},
+		{
+			name:    "invalid translation path",
+			orgF:    filepath.Join("xayah", "fake"),
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := readFiles(filepath.Join(wd, tt.orgF), filepath.Join(wd, tt.trltF)); (err != nil) != tt.wantErr {
-				t.Errorf("readFiles() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("name: %s\nreadFiles() error = %v, wantErr %v", tt.name, err, tt.wantErr)
 			}
 		})
 	}
