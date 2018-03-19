@@ -7,9 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/XML-Comp/XML-Comp/comparer"
 	"os/user"
 	"runtime"
+
+	"github.com/XML-Comp/XML-Comp/comparer"
 )
 
 const ver = "v0.4"
