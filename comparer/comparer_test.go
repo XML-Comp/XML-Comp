@@ -130,6 +130,11 @@ func TestReadFiles(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name:    "testing no such original file",
+			orgF:    filepath.Join("testPaths", "Original", "invalid.xml"),
+			wantErr: true,
+		},
+		{
 			name:    "invalid translation path",
 			orgF:    filepath.Join("xayah", "fake"),
 			wantErr: true,
@@ -212,5 +217,40 @@ func TestCheckTransDir(t *testing.T) {
 	err := os.Remove(filepath.Join(wd, "Translation", "Dir1"))
 	if err != nil {
 		t.Errorf("Error = %v", err)
+	}
+}
+
+func Test_writeToFileMissingTags(t *testing.T) {
+	type args struct {
+		trltF       string
+		missingTags map[string]string
+		outdated    bool
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "cant open invalid translation file",
+			args: args{
+				trltF: filepath.Join("testPaths", "Translation", "garen.txt"),
+			},
+			wantErr: true,
+		},
+		{
+			name: "cant open invalid translation file",
+			args: args{
+				trltF: filepath.Join("testPaths", "Translation", "garen.txt"),
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := writeToFileMissingTags(tt.args.trltF, tt.args.missingTags, tt.args.outdated); (err != nil) != tt.wantErr {
+				t.Errorf("name: %s\n writeToFileMissingTags() error = %v, wantErr %v", tt.name, err, tt.wantErr)
+			}
+		})
 	}
 }
