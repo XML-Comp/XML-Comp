@@ -185,6 +185,11 @@ func TestCheckTransDir(t *testing.T) {
 			t:       filepath.Join(wd, "Translation"),
 			wantErr: false,
 		},
+		{
+			d:       filepath.Join(wd, "English", "Dir1"),
+			t:       filepath.Join(wd, "English", "Dir1"),
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		if err := checkTransDirExists(tt.d, tt.t); (err != nil) != tt.wantErr {
