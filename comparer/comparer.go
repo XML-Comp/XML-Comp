@@ -121,7 +121,7 @@ func writeToFileMissingTags(translationFilePath string, missingTags map[string]s
 			continue
 		}
 		InNeed++
-		if (hasSubstring(missingKey, "<!-")) || (hasSubstring(missingKey, "<--")) || hasSubstring(missingKey, "<?"+DocType) {
+		if isCommentaryOrDocType(missingKey) {
 			_, err = f.WriteString(fmt.Sprintf("\n%s", missingKey))
 			if err != nil {
 				return
@@ -141,6 +141,13 @@ func writeToFileMissingTags(translationFilePath string, missingTags map[string]s
 		}
 	}
 	return
+}
+
+func isCommentaryOrDocType(key string) bool {
+	if (hasSubstring(key, "<!-")) || (hasSubstring(key, "<--")) || hasSubstring(key, "<?"+DocType) {
+		return true
+	}
+	return false
 }
 
 func hasSubstring(str, s string) bool {
