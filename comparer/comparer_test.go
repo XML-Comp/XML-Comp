@@ -242,6 +242,11 @@ func Test_writeToFileMissingTags(t *testing.T) {
 		missingTags map[string]string
 		outdated    bool
 	}
+	f, err := ioutil.TempFile("", "")
+	if err != nil {
+		t.Error(err)
+	}
+	defer os.Remove(f.Name())
 	tests := []struct {
 		name    string
 		args    args
@@ -255,11 +260,18 @@ func Test_writeToFileMissingTags(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "cant open invalid translation file",
+			name: "writes correctly tags and ignores if it's a commentary or doctype description",
 			args: args{
-				trltF: filepath.Join("testPaths", "Translation", "garen.txt"),
+				trltF: f.Name(),
+				missingTags: map[string]string{
+					fmt.Sprintf("<%v", pathSep): "",
+					"<!-":       "",
+					"<ezreal>":  "",
+					"<minerva>": "",
+					"<robo>":    "",
+				},
 			},
-			wantErr: true,
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
