@@ -209,7 +209,7 @@ func checkTransDirExists(dir, translation string) (err error) {
 		splitedDirectory := strings.Split(dir, pathSep)
 		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])-1]
 		os.Chdir(parentDirFromSplit)
-		fmt.Println(fmt.Sprintf("creating: %v | %v", splitedDirectory[len(splitedDirectory)-1], dir))
+		fmt.Println(fmt.Sprintf("creating: %v \ndir: %v \nerr: %v", splitedDirectory[len(splitedDirectory)-1], dir, err))
 		err = os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
 		if err != nil {
 			return
