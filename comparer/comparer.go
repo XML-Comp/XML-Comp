@@ -110,8 +110,8 @@ func readFiles(orgF, trltF string) (err error) {
 	return
 }
 
-func writeToFileMissingTags(trltF string, missingTags map[string]string, outdated bool) (err error) {
-	f, err := os.OpenFile(trltF, os.O_APPEND|os.O_WRONLY, 0600)
+func writeToFileMissingTags(translationFilePath string, missingTags map[string]string, outdated bool) (err error) {
+	f, err := os.OpenFile(translationFilePath, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return
 	}
@@ -121,7 +121,7 @@ func writeToFileMissingTags(trltF string, missingTags map[string]string, outdate
 			continue
 		}
 		InNeed++
-		if (isFormatFile(missingKey, "<!-")) || (isFormatFile(missingKey, "<--")) || isFormatFile(missingKey, "<?"+DocType) {
+		if (hasSubstring(missingKey, "<!-")) || (hasSubstring(missingKey, "<--")) || hasSubstring(missingKey, "<?"+DocType) {
 			_, err = f.WriteString(fmt.Sprintf("\n%s", missingKey))
 			if err != nil {
 				return
@@ -143,7 +143,7 @@ func writeToFileMissingTags(trltF string, missingTags map[string]string, outdate
 	return
 }
 
-func isFormatFile(str, s string) bool {
+func hasSubstring(str, s string) bool {
 	return strings.Contains(s, str)
 }
 
