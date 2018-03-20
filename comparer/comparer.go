@@ -147,12 +147,12 @@ func isFormatFile(str, s string) bool {
 	return strings.Contains(s, str)
 }
 
-func readFile(file, path string) (map[string]string, error) {
-	splittedFileName := strings.Split(file, ".")
+func readFile(fileName, filePath string) (map[string]string, error) {
+	splittedFileName := strings.Split(fileName, ".")
 	if splittedFileName[len(splittedFileName)-1] != DocType {
 		return nil, nil
 	}
-	inFile, err := os.Open(filepath.Join(path, file))
+	inFile, err := os.Open(filepath.Join(filePath, fileName))
 	if err != nil {
 		return nil, err
 	}
