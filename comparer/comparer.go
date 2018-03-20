@@ -198,18 +198,22 @@ func findMissing(original, translation map[string]string) map[string]string {
 	return missing
 }
 
-func checkTransDirExists(dir, translation string) error {
+// TODO: refactor
+// this should return a bool and an error,
+// this way the upper func can handle dir creation
+func checkTransDirExists(dir, translation string) (err error) {
 	splitDir := strings.Split(dir, pathSep)
 	dir = filepath.Join(translation, splitDir[len(splitDir)-1])
-	_, err := os.Open(dir)
+	_, err = os.Open(dir)
 	if err != nil {
 		splitedDirectory := strings.Split(dir, pathSep)
 		parentDirFromSplit := dir[:len(dir)-len(splitedDirectory[len(splitedDirectory)-1])-1]
 		os.Chdir(parentDirFromSplit)
-		errMkdir := os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
-		if errMkdir != nil {
-			return errMkdir
+		fmt.Println(fmt.Sprintf("creating: %v | %v", splitedDirectory[len(splitedDirectory)-1], dir))
+		err = os.Mkdir(splitedDirectory[len(splitedDirectory)-1], 0700)
+		if err != nil {
+			return
 		}
 	}
-	return nil
+	return
 }

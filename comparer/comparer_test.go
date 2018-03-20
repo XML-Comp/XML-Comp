@@ -195,23 +195,33 @@ func TestCheckTransDir(t *testing.T) {
 	os.Chdir("..")
 	wd, _ := os.Getwd()
 	tests := []struct {
-		d, t    string
-		wantErr bool
+		name           string
+		originalDir    string
+		translationDir string
+		wantErr        bool
 	}{
 		{
-			d:       filepath.Join(wd, "English", "Dir1"),
-			t:       filepath.Join(wd, "Translation"),
-			wantErr: false,
+			name:           "test translation has no dir1",
+			originalDir:    filepath.Join(wd, "English", "Dir1"),
+			translationDir: filepath.Join(wd, "Translation"),
+			wantErr:        false,
 		},
 		{
-			d:       filepath.Join(wd, "English", "Dir1"),
-			t:       filepath.Join(wd, "English", "Dir1"),
-			wantErr: false,
+			name:           "test same name dirs should pass",
+			originalDir:    filepath.Join(wd, "English", "Dir1"),
+			translationDir: filepath.Join(wd, "English"),
+			wantErr:        false,
+		},
+		{
+			name:           "test fake dirs should err",
+			originalDir:    filepath.Join(wd, "English", "Dir1"),
+			translationDir: filepath.Join(wd, "kai'sa"),
+			wantErr:        true,
 		},
 	}
 	for _, tt := range tests {
-		if err := checkTransDirExists(tt.d, tt.t); (err != nil) != tt.wantErr {
-			t.Errorf("checkTransDir() error = %v, wantErr %v", err, tt.wantErr)
+		if err := checkTransDirExists(tt.originalDir, tt.translationDir); (err != nil) != tt.wantErr {
+			t.Errorf("\nname: %s\ndir: %s\ncheckTransDir() error = %v, wantErr %v", tt.name, tt.translationDir, err, tt.wantErr)
 		}
 	}
 	err := os.Remove(filepath.Join(wd, "Translation", "Dir1"))
