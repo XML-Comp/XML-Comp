@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"runtime"
 	"strings"
 	"testing"
 )
@@ -15,32 +14,30 @@ import (
 var wd, _ = os.Getwd()
 
 func TestCompareFolder(t *testing.T) {
-	fileMissing := "no such file or directory"
-	if runtime.GOOS == "windows" {
-		fileMissing = "The system cannot find the file specified."
-	}
 	tests := []struct {
-		name     string
-		PathA    string
-		PathB    string
-		Expected error
+		name    string
+		PathA   string
+		PathB   string
+		wantErr bool
 	}{
 		{
-			name:     "no dir",
-			PathA:    "fakeDir1",
-			PathB:    "fakeDir2",
-			Expected: fmt.Errorf("chdir fakeDir1: %s", fileMissing),
+			name:    "no dir",
+			PathA:   "fakeDir1",
+			PathB:   "fakeDir2",
+			wantErr: true,
+		},
+		{
+			name:    "no dir",
+			PathA:   filepath.Join(wd, "testPaths", "Original"),
+			PathB:   filepath.Join(wd, "testPaths", "Translation"),
+			wantErr: false,
 		},
 	}
 	for _, test := range tests {
 		err := Compare(test.PathA, test.PathB)
-		if !reflect.DeepEqual(err.Error(), test.Expected.Error()) {
-			t.Errorf("Wanted error %v, got %v", test.Expected, err)
+		if (err != nil) != test.wantErr {
+			t.Errorf("Compare() error = %v, want error %v", err, test.wantErr)
 		}
-	}
-	err := Compare(filepath.Join(wd, "testPaths", "Original"), filepath.Join(wd, "testPaths", "Translation"))
-	if err != nil {
-		t.Errorf("Wanted error %v, got %v", nil, err)
 	}
 }
 
@@ -83,7 +80,6 @@ func TestReadFile(t *testing.T) {
 			got, err := readFile(tt.args.file, tt.args.path)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("readFile() error = %v, wantErr %v", err, tt.wantErr)
-				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("readFile() = %v, want %v", got, tt.want)
