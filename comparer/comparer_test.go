@@ -27,8 +27,14 @@ func TestCompareFolder(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:    "no dir",
+			name:    "valid paths",
 			PathA:   filepath.Join(wd, "testPaths", "Original"),
+			PathB:   filepath.Join(wd, "testPaths", "Translation"),
+			wantErr: false,
+		},
+		{
+			name:    "valid Dirs should add new dirs",
+			PathA:   filepath.Join(wd, "testPaths", "English"),
 			PathB:   filepath.Join(wd, "testPaths", "Translation"),
 			wantErr: false,
 		},
@@ -39,6 +45,8 @@ func TestCompareFolder(t *testing.T) {
 			t.Errorf("Compare() error = %v, want error %v", err, test.wantErr)
 		}
 	}
+	defer os.Remove(filepath.Join(wd, "testPaths", "Translation", "Dir1"))
+	defer os.Remove(filepath.Join(wd, "testPaths", "Translation", "dir"))
 }
 
 func TestReadFile(t *testing.T) {
