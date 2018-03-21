@@ -117,6 +117,9 @@ func writeToFileMissingTags(translationFilePath string, missingTags map[string]s
 	}
 	defer f.Close()
 	for missingKey, missingValue := range missingTags {
+		if len(missingKey) == 0 {
+			continue
+		}
 		if string(missingKey[1]) == pathSep {
 			continue
 		}

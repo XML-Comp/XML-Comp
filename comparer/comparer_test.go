@@ -273,11 +273,23 @@ func Test_writeToFileMissingTags(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "should pass on empty element in map",
+			args: args{
+				trltF:       f.Name(),
+				missingTags: map[string]string{"": ""},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := writeToFileMissingTags(tt.args.trltF, tt.args.missingTags, tt.args.outdated); (err != nil) != tt.wantErr {
+			if err = writeToFileMissingTags(tt.args.trltF, tt.args.missingTags, tt.args.outdated); (err != nil) != tt.wantErr {
 				t.Errorf("name: %s\n writeToFileMissingTags() error = %v, wantErr %v", tt.name, err, tt.wantErr)
+			}
+			err = ioutil.WriteFile(f.Name(), []byte(""), 0644)
+			if err != nil {
+				t.Error(err)
 			}
 		})
 	}
