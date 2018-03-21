@@ -52,21 +52,21 @@ func Compare(original, translation string) (err error) {
 	return
 }
 
-func ReadDir(path string) ([]os.FileInfo, error) {
-	err := os.Chdir(path)
+func ReadDir(path string) (file []os.FileInfo, err error) {
+	err = os.Chdir(path)
 	if err != nil {
-		return nil, err
+		return
 	}
 	fi, err := os.Open(path)
 	if err != nil {
-		return nil, err
-	}
-	file, err := fi.Readdir(0)
-	if err != nil {
-		return nil, err
+		return
 	}
 	defer fi.Close()
-	return file, nil
+	file, err = fi.Readdir(0)
+	if err != nil {
+		return
+	}
+	return
 }
 
 func readFiles(originalFile, translationFile string) (err error) {
