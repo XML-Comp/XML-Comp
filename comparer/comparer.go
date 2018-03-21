@@ -70,6 +70,9 @@ func ReadDir(path string) ([]os.FileInfo, error) {
 }
 
 func readFiles(originalFile, translationFile string) (err error) {
+	if (len(originalFile) == 0) || (len(translationFile) == 0) {
+		return errEmptyFileOrPathName
+	}
 	err = os.Chdir(filepath.Dir(originalFile))
 	if err != nil {
 		return
@@ -158,6 +161,9 @@ func hasSubstring(str, s string) bool {
 }
 
 func readFile(fileName, filePath string) (map[string]string, error) {
+	if (len(fileName) == 0) || (len(filePath) == 0) {
+		return nil, errEmptyFileOrPathName
+	}
 	splittedFileName := strings.Split(fileName, ".")
 	if splittedFileName[len(splittedFileName)-1] != DocType {
 		return nil, nil
@@ -178,10 +184,10 @@ func readFile(fileName, filePath string) (map[string]string, error) {
 			continue
 		}
 		tag := line[indexStart : indexEnd+1]
-		markers := strings.Split(tag, " ")
 		if string(tag[0]) == pathSep {
 			continue
 		}
+		markers := strings.Split(tag, " ")
 		tag = markers[0]
 		valEnd := strings.LastIndex(line, "<")
 		if valEnd < indexEnd {

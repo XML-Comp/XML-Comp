@@ -73,6 +73,10 @@ func TestReadFile(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name:    "cant read empty file name/path",
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -290,6 +294,27 @@ func Test_writeToFileMissingTags(t *testing.T) {
 			err = ioutil.WriteFile(f.Name(), []byte(""), 0644)
 			if err != nil {
 				t.Error(err)
+			}
+		})
+	}
+}
+
+func Test_ReadFiles(t *testing.T) {
+	tests := []struct {
+		name    string
+		orgF    string
+		trltF   string
+		wantErr bool
+	}{
+		{
+			name:    "test inexistant translation file",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := readFiles(tt.orgF, tt.trltF); (err != nil) != tt.wantErr {
+				t.Errorf("readFiles() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
