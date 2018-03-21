@@ -69,22 +69,22 @@ func ReadDir(path string) ([]os.FileInfo, error) {
 	return file, nil
 }
 
-func readFiles(orgF, trltF string) (err error) {
-	err = os.Chdir(filepath.Dir(orgF))
+func readFiles(originalFile, translationFile string) (err error) {
+	err = os.Chdir(filepath.Dir(originalFile))
 	if err != nil {
 		return
 	}
-	fName := strings.Split(orgF, pathSep)
+	fName := strings.Split(originalFile, pathSep)
 	fileName := fName[len(fName)-1]
-	orgTags, err := readFile(fileName, filepath.Dir(orgF))
+	orgTags, err := readFile(fileName, filepath.Dir(originalFile))
 	if err != nil {
 		return
 	}
-	fName = strings.Split(trltF, pathSep)
+	fName = strings.Split(translationFile, pathSep)
 	fileName = fName[len(fName)-1]
-	trltTags, err := readFile(fileName, filepath.Dir(trltF))
+	trltTags, err := readFile(fileName, filepath.Dir(translationFile))
 	if err != nil {
-		err = os.Chdir(filepath.Dir(trltF))
+		err = os.Chdir(filepath.Dir(translationFile))
 		if err != nil {
 			return
 		}
@@ -99,11 +99,11 @@ func readFiles(orgF, trltF string) (err error) {
 		return
 	}
 	outdatedTags := findMissing(trltTags, orgTags)
-	err = writeToFileMissingTags(trltF, outdatedTags, true)
+	err = writeToFileMissingTags(translationFile, outdatedTags, true)
 	if err != nil {
 		return
 	}
-	err = writeToFileMissingTags(trltF, missingTags, false)
+	err = writeToFileMissingTags(translationFile, missingTags, false)
 	if err != nil {
 		return
 	}
